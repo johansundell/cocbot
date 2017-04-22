@@ -233,7 +233,7 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	case strings.Contains(strings.ToLower(m.Content), "bbl"):
 		msg = "No don't leave me here alone"
 	case strings.ToLower(m.Content) == "!help":
-		msg = "!list members [name] - to see current members\n!show newbie - to see our newest members and their donations\n!top donators - to see our best donatots\n!top war players - to see our top war whores\n!top war NN players - to see the top NN players\n!send me nude pics - to see me nude"
+		msg = "!list members [name] - to see current members\n!show newbie - to see our newest members and their donations\n!top donators - to see our best donatots\n!top war players - to see our top war whores\n!top war NN players - to see the top NN players\n!fortune - to get a fortune cookie\n!send me nude pics - to see me nude"
 		//case m.Content == "!show war stars":
 
 	}
