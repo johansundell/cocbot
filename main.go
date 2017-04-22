@@ -231,7 +231,8 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 		}
 		msg = string(out)
 	case strings.Contains(strings.ToLower(m.Content), "bbl"):
-		msg = "No don't leave me here alone"
+		msg = "No don't leave me here alone with ClanBot"
+		_, _ = s.ChannelMessageSend(m.ChannelID, "!smells")
 	case strings.ToLower(m.Content) == "!help":
 		msg = "!list members [name] - to see current members\n!show newbie - to see our newest members and their donations\n!top donators - to see our best donatots\n!top war players - to see our top war whores\n!top war NN players - to see the top NN players\n!fortune - to get a fortune cookie\n!send me nude pics - to see me nude"
 		//case m.Content == "!show war stars":
