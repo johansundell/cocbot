@@ -7,6 +7,7 @@ import (
 	"io"
 	"log"
 	"os"
+	"os/exec"
 	"regexp"
 	"sort"
 	"strconv"
@@ -222,6 +223,13 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 			}
 			msg += fmt.Sprintf("%d stars for %s\n", p.WarStars, p.Name)
 		}
+	case strings.ToLower(m.Content) == "!fortune":
+		out, err := exec.Command("fortune").Output()
+		if err != nil {
+			log.Println(err)
+			return
+		}
+		msg = string(out)
 	case strings.Contains(strings.ToLower(m.Content), "bbl"):
 		msg = "No don't leave me here alone"
 	case strings.ToLower(m.Content) == "!help":
