@@ -50,6 +50,10 @@ func init() {
 	Token = os.Getenv("DICS_TOKEN")
 }
 
+var test = `01101110 01101111 00100000 01100011 01101111 01100011 01100010 01101111 01110100 00100000 01111001 01101111 01110101 00100000 01110011 01101101 01100101 01101100 01101100`
+
+//var test = `01001110 01101111 0100000 01001001 0100000 01100100 01101111 01101110 0100111 01110100 0100000 01100001 01101110 01100100 0100000 01001001 0100000 01100001 01101101 0100000 01110011 01110100 01110101 01100011 01101011 0100000 01101000 01100101 01110010 01100101 0100000 01110111 01101001 01110100 01101000 0100000 01111001 01101111 01110101`
+
 func main() {
 	// Create a new Discord session using the provided bot token.
 	dg, err := discordgo.New("Bot " + Token)
@@ -69,6 +73,34 @@ func main() {
 	defer db.Close()
 
 	cocClient = cocapi.NewClient(myKey)
+
+	fields := strings.Fields(test)
+	isBinary := true
+	for _, v := range fields {
+		if len(v) != 8 && strings.Count(v, "0")+strings.Count(v, "1") == 8 {
+			isBinary = false
+		}
+	}
+	result := ""
+	if isBinary {
+		for _, v := range fields {
+			if i, err := strconv.ParseInt(v, 2, 64); err != nil {
+				fmt.Println(err)
+			} else {
+				result += string(i)
+			}
+		}
+	}
+	fmt.Println(result)
+	output := ""
+	if result == "no cocbot you smell" {
+		m := "No I don't and I am stuck here with you"
+		for _, v := range m {
+			output += fmt.Sprintf("0%b ", v)
+		}
+	}
+	fmt.Println(output)
+	//return
 
 	if strings.HasPrefix("!list player #2P9UYQP0", "!list player") {
 		//player, _ := cocClient.GetPlayerInfo("#2P9UYQP0")
@@ -255,6 +287,31 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 				break
 			}
 			msg += fmt.Sprintf("%d stars for %s\n", p.WarStars, p.Name)
+		}
+	}
+
+	fields := strings.Fields(m.Content)
+	isBinary := true
+	for _, v := range fields {
+		if len(v) != 8 && strings.Count(v, "0")+strings.Count(v, "1") == 8 {
+			isBinary = false
+		}
+	}
+	result := ""
+	if isBinary {
+		for _, v := range fields {
+			if i, err := strconv.ParseInt(v, 2, 64); err != nil {
+				//fmt.Println(err)
+			} else {
+				result += string(i)
+			}
+		}
+	}
+	//fmt.Println(result)
+	if result == "no cocbot you smell" {
+		m := "No I don't and I am stuck here with you"
+		for _, v := range m {
+			msg += fmt.Sprintf("0%b ", v)
 		}
 	}
 
