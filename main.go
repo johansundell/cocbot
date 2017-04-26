@@ -50,9 +50,9 @@ func init() {
 	Token = os.Getenv("DICS_TOKEN")
 }
 
-var test = `01101110 01101111 00100000 01100011 01101111 01100011 01100010 01101111 01110100 00100000 01111001 01101111 01110101 00100000 01110011 01101101 01100101 01101100 01101100`
+//var test = `01101110 01101111 00100000 01100011 01101111 01100011 01100010 01101111 01110100 00100000 01111001 01101111 01110101 00100000 01110011 01101101 01100101 01101100 01101100`
 
-//var test = `01001110 01101111 0100000 01001001 0100000 01100100 01101111 01101110 0100111 01110100 0100000 01100001 01101110 01100100 0100000 01001001 0100000 01100001 01101101 0100000 01110011 01110100 01110101 01100011 01101011 0100000 01101000 01100101 01110010 01100101 0100000 01110111 01101001 01110100 01101000 0100000 01111001 01101111 01110101`
+var test = `01001110 01101111 0100000 01001001 0100000 01100100 01101111 01101110 0100111 01110100 0100000 01100001 01101110 01100100 0100000 01001001 0100000 01100001 01101101 0100000 01110011 01110100 01110101 01100011 01101011 0100000 01101000 01100101 01110010 01100101 0100000 01110111 01101001 01110100 01101000 0100000 01111001 01101111 01110101`
 
 func main() {
 	// Create a new Discord session using the provided bot token.
@@ -91,7 +91,7 @@ func main() {
 			}
 		}
 	}
-	fmt.Println(result)
+	//fmt.Println(result)
 	output := ""
 	if result == "no cocbot you smell" {
 		m := "No I don't and I am stuck here with you"
@@ -99,20 +99,27 @@ func main() {
 			output += fmt.Sprintf("0%b ", v)
 		}
 	}
-	fmt.Println(output)
+	//fmt.Println(output)
+	//fmt.Println(getDonations(2))
+	fmt.Println(getUserDonations("sudde", 3))
 	//return
 
 	if strings.HasPrefix("!list player #2P9UYQP0", "!list player") {
 		//player, _ := cocClient.GetPlayerInfo("#2P9UYQP0")
 		//log.Println(player)
 
-		if found, _ := regexp.MatchString("!top war [0-9]+ players", "!top war 1 players"); found {
+		/*if found, _ := regexp.MatchString("!top war [0-9]+ players", "!top war 1 players"); found {
 			str := "!top war 19 players"[len("!top war "):]
 			str = str[:strings.Index(str, " ")]
 			fmt.Println(strconv.Atoi(str))
+		}*/
+		if strings.HasPrefix("!last donations", "!last donations") {
+			db.Query("SELECT donations d ")
 		}
+
 	}
 
+	//return
 	//loadSound()
 
 	// Store the account ID for later use.
@@ -141,6 +148,8 @@ func main() {
 func ready(s *discordgo.Session, event *discordgo.Ready) {
 }
 
+var alerts []chan bool
+
 // This function will be called (due to AddHandler above) every time a new
 // guild is joined.
 func guildCreate(s *discordgo.Session, event *discordgo.GuildCreate) {
@@ -151,6 +160,15 @@ func guildCreate(s *discordgo.Session, event *discordgo.GuildCreate) {
 	for _, channel := range event.Guild.Channels {
 		if channel.ID == event.Guild.ID {
 			//_, _ = s.ChannelMessageSend(channel.ID, "cocbot is ready, type !hi to say hi to it")
+			mine := make(chan bool)
+			alerts = append(alerts, mine)
+			for {
+				select {
+				case <-mine:
+					fmt.Println("Got message")
+					_, _ = s.ChannelMessageSend(channel.ID, "Someone said hi to me")
+				}
+			}
 			return
 		}
 	}
@@ -171,6 +189,67 @@ func getMembers(search string) (MemberList, error) {
 		mb.Members = append(mb.Members, m)
 	}
 	return mb, nil
+}
+
+var queryDonations = `
+SELECT 
+    (d.current_donations - d.prev_donations) AS diff,
+    m.name,
+    ROUND(TIME_TO_SEC(TIMEDIFF(NOW(), d.ts)) / 60) AS since
+FROM
+    donations d
+        JOIN
+    members m ON m.member_id = d.member_id
+ORDER BY d.donate_id DESC
+LIMIT 0 , ?
+`
+
+type donations struct {
+	name   string
+	min    int64
+	amount int64
+}
+
+func getDonations(numToFetch int) ([]donations, error) {
+	rows, err := db.Query(queryDonations, numToFetch)
+	if err != nil {
+		return nil, err
+	}
+	don := []donations{}
+	for rows.Next() {
+		d := donations{}
+		rows.Scan(&d.amount, &d.name, &d.min)
+		don = append(don, d)
+	}
+	return don, nil
+}
+
+var queryUserDonations = `
+SELECT 
+    (d.current_donations - d.prev_donations) AS diff,
+    m.name,
+    ROUND(TIME_TO_SEC(TIMEDIFF(NOW(), d.ts)) / 60) AS since
+FROM
+    donations d
+        JOIN
+    members m ON m.member_id = d.member_id
+WHERE m.name LIKE ?
+ORDER BY d.donate_id DESC
+LIMIT 0 , ?
+`
+
+func getUserDonations(name string, numToFetch int) ([]donations, error) {
+	rows, err := db.Query(queryUserDonations, name, numToFetch)
+	if err != nil {
+		return nil, err
+	}
+	don := []donations{}
+	for rows.Next() {
+		d := donations{}
+		rows.Scan(&d.amount, &d.name, &d.min)
+		don = append(don, d)
+	}
+	return don, nil
 }
 
 func getHeroLvl(p cocapi.Player) int {
@@ -207,6 +286,31 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 
 	msg := ""
 	switch {
+	case strings.HasPrefix(strings.ToLower(m.Content), "!last donations for"):
+		name := strings.TrimSpace(strings.ToLower(m.Content)[len("!last donations for"):])
+		don, err := getUserDonations(name, 10)
+		if err != nil {
+			log.Panicln(err)
+			return
+		}
+		if len(don) != 0 {
+			msg += "These are the last donations by " + name + "\n"
+			for _, v := range don {
+				msg += fmt.Sprintf("%d troops %d minutes ago\n", v.amount, v.min)
+			}
+		}
+	case strings.ToLower(m.Content) == "!last donations":
+		/*for _, v := range alerts {
+			v <- true
+		}*/
+		don, err := getDonations(10)
+		if err != nil {
+			log.Println(err)
+			return
+		}
+		for _, v := range don {
+			msg += fmt.Sprintf("%s donated %d troops %d minutes ago\n", v.name, v.amount, v.min)
+		}
 	case strings.HasPrefix(strings.ToLower(m.Content), "!list members"):
 		log.Println("here")
 		mb, err := getMembers(m.Content[len("!list members"):])
@@ -266,7 +370,7 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 		msg = "No don't leave me here alone with ClanBot"
 		_, _ = s.ChannelMessageSend(m.ChannelID, "!smells")
 	case strings.ToLower(m.Content) == "!help":
-		msg = "!list members [name] - to see current members\n!show newbie - to see our newest members and their donations\n!top donators - to see our best donatots\n!top war players - to see our top war whores\n!top war NN players - to see the top NN players\n!fortune - to get a fortune cookie\n!send me nude pics - to see me nude"
+		msg = "!list members [name] - to see current members\n!show newbie - to see our newest members and their donations\n!top donators - to see our best donatots\n!top war players - to see our top war whores\n!top war NN players - to see the top NN players\n!last donations - to see the last 10 donations done\n!last donations for [name] - to see the last donations by that member\n!fortune - to get a fortune cookie\n!send me nude pics - to see me nude"
 		//case m.Content == "!show war stars":
 
 	}
