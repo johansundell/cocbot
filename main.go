@@ -113,11 +113,13 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	}
 
 	if command == "!help" {
+		msg = "**COCBOT COMMANDS**\n```"
 		for k, _ := range botFuncs {
 			if k.helpText != "" {
 				msg += fmt.Sprintf("%s - *%s*\n", k.command, k.helpText)
 			}
 		}
+		msg += "```"
 	}
 
 	if msg != "" {
