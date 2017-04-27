@@ -40,6 +40,8 @@ func init() {
 	myClanTag = os.Getenv("COC_CLANTAG")
 	myKey = os.Getenv("COC_KEY")
 	Token = os.Getenv("DICS_TOKEN")
+	emailTo = os.Getenv("EMAIL_TO")
+	emailFrom = os.Getenv("EMAIL_FROM")
 }
 
 func main() {
@@ -70,12 +72,26 @@ func main() {
 	// Register messageCreate as a callback for the messageCreate events.
 	dg.AddHandler(messageCreate)
 
+	dg.AddHandler(func(sess *discordgo.Session, event *discordgo.GuildCreate) {
+		if event.Guild.Unavailable {
+			return
+		}
+
+		for _, channel := range event.Guild.Channels {
+			if channel.ID == event.Guild.ID {
+				channels = append(channels, channel.ID)
+				return
+			}
+		}
+	})
+
 	// Open the websocket and begin listening.
 	err = dg.Open()
 	if err != nil {
 		fmt.Println("error opening connection,", err)
 		return
 	}
+	go reporter(dg)
 
 	fmt.Println("Bot is now running.  Press CTRL-C to exit.")
 	// Simple way to keep program running until CTRL-C is pressed.
