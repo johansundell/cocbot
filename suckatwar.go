@@ -1,13 +1,16 @@
 package main
 
-import "os/exec"
+import (
+	"os/exec"
+	"strings"
+)
 
 func init() {
-	key := commandFunc{"!why do I suck at war", "Hopefully somwthing wise", ""}
+	key := commandFunc{"!why do i suck at", "", ""}
 	lockMap.Lock()
 	defer lockMap.Unlock()
 	botFuncs[key] = func(command string) (string, error) {
-		if key.command == command {
+		if strings.HasPrefix(command, key.command) {
 			out, err := exec.Command("fortune", "tao").Output()
 			if err != nil {
 				return "", err
