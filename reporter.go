@@ -67,7 +67,7 @@ func checkMembers(s *discordgo.Session) {
 				}
 			}
 		}
-		if m.Role == "member" && m.Donations >= 800 {
+		if m.Role == "member" && m.Donations >= 1000 {
 			log.Println("Found member that should be upgraded", m.Name)
 			var alerted int
 			db.QueryRow("SELECT alerted_discord FROM members WHERE tag = ?", m.Tag).Scan(&alerted)
