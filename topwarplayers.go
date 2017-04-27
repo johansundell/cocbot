@@ -15,7 +15,10 @@ func init() {
 	defer lockMap.Unlock()
 	botFuncs[key] = func(command string) (string, error) {
 		if key.command == command {
-			list, _ := cocClient.GetMembers(myClanTag)
+			list, err := cocClient.GetMembers(myClanTag)
+			if err != nil {
+				return "", err
+			}
 			players := []cocapi.Player{}
 			for _, v := range list.Items {
 				p, _ := cocClient.GetPlayerInfo(v.Tag)
@@ -48,7 +51,10 @@ func init() {
 				if err != nil {
 					return "", err
 				}
-				list, _ := cocClient.GetMembers(myClanTag)
+				list, err := cocClient.GetMembers(myClanTag)
+				if err != nil {
+					return "", err
+				}
 				players := []cocapi.Player{}
 				for _, v := range list.Items {
 					p, _ := cocClient.GetPlayerInfo(v.Tag)
