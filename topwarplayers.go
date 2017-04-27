@@ -38,10 +38,10 @@ func init() {
 		return "", nil
 	}
 
-	key = commandFunc{"!top [0-9]+ war players", "To see our top NN war whores", "[0-9]+"}
-	botFuncs[key] = func(command string) (string, error) {
-		if found, _ := regexp.MatchString(key.command, command); found {
-			reg, err := regexp.Compile(key.extracter)
+	key2 := commandFunc{"!top [0-9]+ war players", "To see our top NN war whores", "[0-9]+"}
+	botFuncs[key2] = func(command string) (string, error) {
+		if found, _ := regexp.MatchString(key2.command, command); found {
+			reg, err := regexp.Compile(key2.extracter)
 			if err != nil {
 				return "", err
 			}
