@@ -67,14 +67,14 @@ func checkMembers(s *discordgo.Session) {
 				}
 			}
 		}
-		if m.Role == "member" && m.Donations >= 1000 {
+		if m.Role == "member" && m.Donations >= 880 {
 			log.Println("Found member that should be upgraded", m.Name)
 			var alerted int
-			db.QueryRow("SELECT alert_sent_donations FROM members WHERE tag = ?", m.Tag).Scan(&alerted)
+			db.QueryRow("SELECT alerted_discord FROM members WHERE tag = ?", m.Tag).Scan(&alerted)
 			if alerted == 0 {
 				//sendEmail("Member "+m.Name+" should be upgraded", "Member "+m.Name+" should be upgraded")
 				sendMessage(s, "Member "+m.Name+" should be upgraded")
-				db.Exec("UPDATE members SET alert_sent_donations = 1 WHERE tag = ?", m.Tag)
+				db.Exec("UPDATE members SET alerted_discord = 1 WHERE tag = ?", m.Tag)
 			}
 		}
 	}
