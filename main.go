@@ -43,6 +43,8 @@ func init() {
 }
 
 func main() {
+	cocClient = cocapi.NewClient(myKey)
+
 	dg, err := discordgo.New("Bot " + Token)
 	if err != nil {
 		fmt.Println("error creating Discord session,", err)
@@ -54,8 +56,6 @@ func main() {
 		log.Fatal(err)
 	}
 	defer db.Close()
-
-	cocClient = cocapi.NewClient(myKey)
 
 	// Get the account information.
 	u, err := dg.User("@me")
