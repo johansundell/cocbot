@@ -88,6 +88,7 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	if m.Author.ID == BotID {
 		return
 	}
+	fmt.Println(m.Content)
 
 	command := strings.ToLower(m.Content)
 	lockMap.RLock()
