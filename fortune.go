@@ -8,7 +8,7 @@ func init() {
 	defer lockMap.Unlock()
 	botFuncs[key] = func(command string) (string, error) {
 		if key.command == command {
-			out, err := exec.Command("fortune").Output()
+			out, err := exec.Command("fortune", "computers", "men-women").Output()
 			if err != nil {
 				return "", err
 			}
