@@ -30,11 +30,11 @@ func init() {
 		return "", nil
 	}
 
-	key = commandFunc{"!last donations for [name]", "To see the last donations by that member", ""}
-	botFuncs[key] = func(command string) (string, error) {
-		cmd := strings.Replace(key.command, " [name]", "", -1)
+	key2 := commandFunc{"!last donations for [name]", "To see the last donations by that member", ""}
+	botFuncs[key2] = func(command string) (string, error) {
+		cmd := strings.Replace(key2.command, " [name]", "", -1)
 		if strings.HasPrefix(command, cmd) {
-			name := command[len(cmd):]
+			name := strings.TrimSpace(command[len(cmd):])
 			don, err := getUserDonations(name, 10)
 			if err != nil {
 				return "", err

@@ -106,6 +106,7 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 		f, err := os.Open("IMG_20170405_142440.jpg")
 		if err != nil {
 			log.Println(err)
+			return
 		}
 		_, _ = s.ChannelFileSend(m.ChannelID, "me.jpg", f)
 	}
