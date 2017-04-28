@@ -24,7 +24,14 @@ func init() {
 			}
 			msg := ""
 			for _, v := range don {
-				msg += fmt.Sprintf("%s donated %d troops %s ago\n", v.name, v.amount, (time.Duration(v.min) * time.Second).String())
+				msg += fmt.Sprintf("%s donated %d troops %s ago\n\n", v.name, v.amount, (time.Duration(v.min) * time.Second).String())
+			}
+			rec, err := getReceive(10)
+			if err != nil {
+				return "", err
+			}
+			for _, v := range rec {
+				msg += fmt.Sprintf("%s got %d troops %s ago\n", v.name, v.amount, (time.Duration(v.min) * time.Second).String())
 			}
 			return msg, nil
 		}
