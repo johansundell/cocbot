@@ -10,12 +10,13 @@ type topDonator struct {
 	amount int64
 }
 
+var keyTopDonators = commandFunc{"!top donators today", "To see the our best donators today", ""}
+
 func init() {
-	key := commandFunc{"!top donators today", "To see the our best donators today", ""}
 	lockMap.Lock()
 	defer lockMap.Unlock()
-	botFuncs[key] = func(command string) (string, error) {
-		if command == key.command {
+	botFuncs[keyTopDonators] = func(command string) (string, error) {
+		if command == keyTopDonators.command {
 			rows, err := db.Query(sqlQueryTopTodayDonators, 10)
 			if err != nil {
 				return "", err

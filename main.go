@@ -45,6 +45,8 @@ func init() {
 }
 
 func main() {
+
+	//return
 	cocClient = cocapi.NewClient(myKey)
 
 	dg, err := discordgo.New("Bot " + Token)
@@ -85,6 +87,10 @@ func main() {
 		}
 	})
 
+	/*dg.AddHandler(func(s *discordgo.Session, event *discordgo.MessageReactionAdd) {
+		fmt.Println(event.Emoji)
+	})*/
+
 	// Open the websocket and begin listening.
 	err = dg.Open()
 	if err != nil {
@@ -92,6 +98,8 @@ func main() {
 		return
 	}
 	go reporter(dg)
+
+	go test(dg)
 
 	fmt.Println("Bot is now running.  Press CTRL-C to exit.")
 	// Simple way to keep program running until CTRL-C is pressed.
@@ -140,6 +148,7 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	}
 
 	if command == "!hidden" && m.Author.Username+"#"+m.Author.Discriminator == "sudde#1958" {
+		//s.MessageReactionAdd(m.ChannelID, m.ID, ":raising_hand:")
 		msg = "**COCBOT COMMANDS**\n```"
 		for k, _ := range botFuncs {
 			if k.helpText == "" {
