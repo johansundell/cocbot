@@ -138,6 +138,16 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 		msg += "```"
 	}
 
+	if command == "!hidden" {
+		msg = "**COCBOT COMMANDS**\n```"
+		for k, _ := range botFuncs {
+			if k.helpText == "" {
+				msg += fmt.Sprintf("%s - %s\n", k.command, k.helpText)
+			}
+		}
+		msg += "```"
+	}
+
 	if msg != "" {
 		s.ChannelMessageSend(m.ChannelID, msg)
 	}
