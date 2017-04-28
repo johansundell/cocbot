@@ -43,7 +43,7 @@ LIMIT 0 , 10
 `
 
 func getReceive(numToFetch int) ([]receive, error) {
-	rows, err := db.Query(queryDonations, numToFetch)
+	rows, err := db.Query(queryRecive, numToFetch)
 	if err != nil {
 		return nil, err
 	}
