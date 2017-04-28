@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"strings"
+	"time"
 )
 
 type donations struct {
@@ -23,7 +24,7 @@ func init() {
 			}
 			msg := ""
 			for _, v := range don {
-				msg += fmt.Sprintf("%s donated %d troops %d minutes ago\n", v.name, v.amount, v.min)
+				msg += fmt.Sprintf("%s donated %d troops %s ago\n", v.name, v.amount, (time.Duration(v.min) * time.Second).String())
 			}
 			return msg, nil
 		}
@@ -43,7 +44,7 @@ func init() {
 			if len(don) != 0 {
 				msg += "These are the last donations by " + name + "\n"
 				for _, v := range don {
-					msg += fmt.Sprintf("%d troops %d minutes ago\n", v.amount, v.min)
+					msg += fmt.Sprintf("%d troops %s ago\n", v.amount, (time.Duration(v.min) * time.Second).String())
 				}
 			}
 			return msg, nil
@@ -56,7 +57,7 @@ var queryDonations = `
 SELECT 
     (d.current_donations - d.prev_donations) AS diff,
     m.name,
-    ROUND(TIME_TO_SEC(TIMEDIFF(NOW(), d.ts)) / 60) AS since
+    TIME_TO_SEC(TIMEDIFF(NOW(), d.ts)) AS since
 FROM
     donations d
         JOIN
@@ -83,7 +84,7 @@ var queryUserDonations = `
 SELECT 
     (d.current_donations - d.prev_donations) AS diff,
     m.name,
-    ROUND(TIME_TO_SEC(TIMEDIFF(NOW(), d.ts)) / 60) AS since
+    TIME_TO_SEC(TIMEDIFF(NOW(), d.ts)) AS since
 FROM
     donations d
         JOIN
