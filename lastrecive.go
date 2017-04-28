@@ -39,7 +39,7 @@ FROM
         JOIN
     members m ON m.member_id = r.member_id
 ORDER BY r.receive_id DESC
-LIMIT 0 , 10
+LIMIT 0 , ?
 `
 
 func getReceive(numToFetch int) ([]receive, error) {
