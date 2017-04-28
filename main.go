@@ -100,7 +100,7 @@ func main() {
 }
 
 func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
-	fmt.Println(m.Content, m.Author.String())
+	fmt.Println(m.Content, m.Author.ID, m.Author.Username)
 
 	// Ignore all messages created by the bot itself
 	if m.Author.ID == BotID {
