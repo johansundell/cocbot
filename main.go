@@ -139,7 +139,7 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 		msg += "```"
 	}
 
-	if command == "!hidden" {
+	if command == "!hidden" && m.Author.Username+"#"+m.Author.Discriminator == "sudde#1958" {
 		msg = "**COCBOT COMMANDS**\n```"
 		for k, _ := range botFuncs {
 			if k.helpText == "" {
