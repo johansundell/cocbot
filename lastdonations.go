@@ -30,7 +30,7 @@ func init() {
 			if err != nil {
 				return "", err
 			}
-			msg += "\n"
+			msg += "--------\n"
 			for _, v := range rec {
 				msg += fmt.Sprintf("%s got %d troops %s ago\n", v.name, v.amount, (time.Duration(v.min) * time.Second).String())
 			}
