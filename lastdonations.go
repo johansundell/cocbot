@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"strings"
 	"time"
 )
@@ -34,6 +35,7 @@ func init() {
 			for _, v := range rec {
 				msg += fmt.Sprintf("%s got %d troops %s ago\n", v.name, v.amount, (time.Duration(v.min) * time.Second).String())
 			}
+			log.Println(len(msg))
 			return msg, nil
 		}
 		return "", nil
