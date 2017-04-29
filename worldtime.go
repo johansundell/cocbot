@@ -27,7 +27,7 @@ func init() {
 					log.Println(err)
 					continue
 				}
-				msg += fmt.Sprintf("The time for %s is %s\n", v, t.In(l).Format("15:04:05"))
+				msg += fmt.Sprintf("The time for %s is %s\n", v, t.In(l).Format("15:04"))
 			}
 			return msg, nil
 		}
