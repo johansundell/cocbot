@@ -29,7 +29,7 @@ func init() {
 				}
 				result = append(result, r)
 			}
-			msg := "Todays top donators are\n"
+			msg := "Todays top donators are, reset at " + getDuration().String() + "\n"
 			for _, v := range result {
 				msg += fmt.Sprintf("%d troops by %s\n", v.amount, v.name)
 			}
@@ -49,7 +49,7 @@ FROM
     members m ON m.member_id = d.member_id
 WHERE
     d.ts >= CURDATE()
-        AND d.ts < CURDATE() + INTERVAL 1 DAY
+        AND d.ts < CURDATE() + INTERVAL 1 DAY AND m.active = 1
 GROUP BY m.member_id
 ORDER BY diff DESC
 LIMIT 0 , ?

@@ -45,8 +45,6 @@ func init() {
 }
 
 func main() {
-
-	//return
 	cocClient = cocapi.NewClient(myKey)
 
 	dg, err := discordgo.New("Bot " + Token)
@@ -60,6 +58,10 @@ func main() {
 		log.Fatal(err)
 	}
 	defer db.Close()
+
+	//fmt.Println(botFuncs[keyTopDonators]("!top donators today"))
+	//fmt.Println(getDuration())
+	//return
 
 	// Get the account information.
 	u, err := dg.User("@me")

@@ -14,6 +14,11 @@ func getTime() time.Time {
 	return t
 }
 
+func getDuration() time.Duration {
+	t := getTime()
+	return t.Sub(time.Now())
+}
+
 func test(s *discordgo.Session) {
 	//now := time.Now()
 	t := getTime()
