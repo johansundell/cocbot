@@ -59,10 +59,6 @@ func main() {
 	}
 	defer db.Close()
 
-	//fmt.Println(botFuncs[keyTopDonators]("!top donators today"))
-	//fmt.Println(getDuration())
-	//return
-
 	// Get the account information.
 	u, err := dg.User("@me")
 	if err != nil {
