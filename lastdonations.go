@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"strings"
 	"time"
 )
@@ -39,7 +38,6 @@ func init() {
 			for _, v := range rec {
 				msg += v.String()
 			}
-			log.Println(len(msg))
 			return msg, nil
 		}
 		return "", nil
