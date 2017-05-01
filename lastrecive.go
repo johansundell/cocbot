@@ -9,6 +9,10 @@ type receive struct {
 	donations
 }
 
+func (v receive) String() string {
+	return fmt.Sprintf("%s got %d troops %s ago\n", v.name, v.amount, (time.Duration(v.min) * time.Second).String())
+}
+
 func init() {
 	key := commandFunc{"!what to name 2", "To list the last 10 to receive troops", ""}
 	lockMap.Lock()

@@ -13,6 +13,10 @@ type donations struct {
 	amount int64
 }
 
+func (v donations) String() string {
+	return fmt.Sprintf("%s donated %d troops %s ago\n", v.name, v.amount, (time.Duration(v.min) * time.Second).String())
+}
+
 func init() {
 	key := commandFunc{"!last donations", "To list the last 10 donations", ""}
 	lockMap.Lock()
@@ -25,7 +29,7 @@ func init() {
 			}
 			msg := ""
 			for _, v := range don {
-				msg += fmt.Sprintf("%s donated %d troops %s ago\n", v.name, v.amount, (time.Duration(v.min) * time.Second).String())
+				msg += v.String()
 			}
 			rec, err := getReceive(10)
 			if err != nil {
@@ -33,7 +37,7 @@ func init() {
 			}
 			msg += "--------\n"
 			for _, v := range rec {
-				msg += fmt.Sprintf("%s got %d troops %s ago\n", v.name, v.amount, (time.Duration(v.min) * time.Second).String())
+				msg += v.String()
 			}
 			log.Println(len(msg))
 			return msg, nil
@@ -54,7 +58,7 @@ func init() {
 			if len(don) != 0 {
 				msg += "These are the last donations by " + name + "\n"
 				for _, v := range don {
-					msg += fmt.Sprintf("%d troops %s ago\n", v.amount, (time.Duration(v.min) * time.Second).String())
+					msg += v.String()
 				}
 			}
 			return msg, nil

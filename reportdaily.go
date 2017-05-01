@@ -26,7 +26,7 @@ func test(s *discordgo.Session) {
 	//fmt.Println(t)
 	//return
 	d := t.Sub(time.Now())
-	fmt.Println(d)
+	//fmt.Println(d)
 	//ticker := time.NewTicker(1 * time.Minute)
 	ticker := time.NewTimer(d)
 	quit := make(chan struct{})
