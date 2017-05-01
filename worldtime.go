@@ -18,6 +18,9 @@ func init() {
 			m["Europe/Stockholm"] = "Sudde"
 			m["Asia/Jakarta"] = "Tommy"
 			m["EST"] = "James and Blac"
+			m["Europe/London"] = "Stube, Blackfear, Sway and E1lioT"
+			m["US/Central"] = "wjn2448"
+			m["Canada/Eastern"] = "Heliloggerjay"
 
 			msg := ""
 			t := time.Now()
