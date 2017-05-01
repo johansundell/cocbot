@@ -18,7 +18,7 @@ func init() {
 	defer lockMap.Unlock()
 	botFuncs[keyTopDonators] = func(command string) (string, error) {
 		if command == keyTopDonators.command {
-			rows, err := db.Query(sqlQueryTopTodayDonators, 3)
+			rows, err := db.Query(sqlQueryTopTodayDonators, 10)
 			if err != nil {
 				return "", err
 			}
