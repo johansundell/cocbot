@@ -38,7 +38,7 @@ func checkMembers(s *discordgo.Session) {
 	}
 	if isCocUnderUpdate {
 		isCocUnderUpdate = false
-		sendMessage(s, "Clash of Clans servers are up again")
+		sendMessage(s, "@everyone Clash of Clans servers are up again")
 	}
 	failedTries = 0
 
@@ -96,7 +96,7 @@ func reportError(s *discordgo.Session, err error) {
 			if failedTries > 3 {
 				if !isCocUnderUpdate {
 					isCocUnderUpdate = true
-					sendMessage(s, "Clash of Clans servers are down")
+					sendMessage(s, "@everyone Clash of Clans servers are down")
 				}
 			}
 		}
