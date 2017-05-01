@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"strings"
 )
 
 type topDonator struct {
@@ -17,7 +18,7 @@ func init() {
 	defer lockMap.Unlock()
 	botFuncs[keyTopDonators] = func(command string) (string, error) {
 		if command == keyTopDonators.command {
-			rows, err := db.Query(sqlQueryTopTodayDonators, 10)
+			rows, err := db.Query(sqlQueryTopTodayDonators, 3)
 			if err != nil {
 				return "", err
 			}
@@ -29,7 +30,11 @@ func init() {
 				}
 				result = append(result, r)
 			}
-			msg := "Todays top donators are, reset at " + getDuration().String() + "\n"
+			f := func(s string) string {
+				n := strings.LastIndex(s, ".")
+				return s[:n] + "s"
+			}
+			msg := "Todays top donators are, reset at " + f(getDuration().String()) + "\n"
 			for _, v := range result {
 				msg += fmt.Sprintf("%d troops by %s\n", v.amount, v.name)
 			}
