@@ -114,6 +114,9 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	}
 
 	command := strings.ToLower(m.Content)
+	if strings.Contains(command, "! ") {
+		command = strings.Replace(command, "! ", "!", 1)
+	}
 	lockMap.RLock()
 	defer lockMap.RUnlock()
 	msg := ""
@@ -126,7 +129,7 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	}
 
 	// Ugly
-	if m.Content == "!send me nude pics" {
+	if command == "!send me nude pics" {
 		f, err := os.Open("IMG_20170405_142440.jpg")
 		if err != nil {
 			log.Println(err)
