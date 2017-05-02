@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"sort"
+	"time"
 )
 
 func init() {
@@ -25,4 +26,9 @@ func init() {
 		}
 		return "", nil
 	}
+}
+
+func firstMonday(year int, month time.Month) int {
+	t := time.Date(year, month, 1, 0, 0, 0, 0, time.UTC)
+	return (8-int(t.Weekday()))%7 + 1
 }
