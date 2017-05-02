@@ -78,7 +78,11 @@ func main() {
 		}
 
 		for _, channel := range event.Guild.Channels {
-			if channel.ID == event.Guild.ID {
+			/*if channel.ID == event.Guild.ID {
+				channels = append(channels, channel.ID)
+				return
+			}*/
+			if channel.Name == "members_chat" {
 				channels = append(channels, channel.ID)
 				return
 			}
