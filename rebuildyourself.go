@@ -12,10 +12,21 @@ func init() {
 			if err != nil {
 				return "", err
 			}
+			msg := ""
 			if string(out) == "" {
-				return "Done now master", nil
+				msg = "Done now master"
+			} else {
+				return string(out), nil
 			}
-			return string(out), nil
+			out, err = exec.Command("go", "install").Output()
+			if err != nil {
+				return "", err
+			}
+			if string(out) == "" {
+				return msg, nil
+			} else {
+				return string(out), nil
+			}
 		}
 		return "", nil
 	}
