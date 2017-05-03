@@ -2,9 +2,11 @@ package main
 
 import (
 	"errors"
+	"math/rand"
 	"os"
 	"path"
 	"path/filepath"
+	"time"
 )
 
 func init() {
@@ -32,8 +34,11 @@ func getRandomImage() (string, error) {
 	for k, v := range files {
 		m[k] = v
 	}
-	for _, v := range m {
-		return v, nil
+	rand.Seed(time.Now().UTC().UnixNano())
+	//fmt.Println(rand.Intn(len(m)), len(m))
+	str, found := m[rand.Intn(len(m))]
+	if !found {
+		return "", errors.New("No files found")
 	}
-	return "", errors.New("No files found")
+	return str, nil
 }
