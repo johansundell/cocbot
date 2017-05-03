@@ -135,7 +135,13 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 
 	// Ugly
 	if command == "!send me nude pics" {
-		f, err := os.Open("IMG_20170405_142440.jpg")
+		str, err := getRandomImage()
+		if err != nil {
+			log.Println(err)
+			return
+		}
+		//f, err := os.Open("IMG_20170405_142440.jpg")
+		f, err := os.Open(str)
 		if err != nil {
 			log.Println(err)
 			return
