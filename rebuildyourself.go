@@ -18,7 +18,8 @@ func init() {
 			} else {
 				return string(out), nil
 			}
-			out, err = exec.Command("go", "install").Output()
+			return msg, nil
+			/*out, err = exec.Command("go", "install").Output()
 			if err != nil {
 				return "", err
 			}
@@ -26,7 +27,7 @@ func init() {
 				return msg, nil
 			} else {
 				return string(out), nil
-			}
+			}*/
 		}
 		return "", nil
 	}
