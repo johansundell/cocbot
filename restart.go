@@ -1,8 +1,6 @@
 package main
 
-import "os/exec"
-
-func init() {
+/*func init() {
 	key := commandFunc{"!restart yourself", "", ""}
 	lockMap.Lock()
 	defer lockMap.Unlock()
@@ -19,4 +17,4 @@ func init() {
 		}
 		return "", nil
 	}
-}
+}*/
