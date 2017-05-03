@@ -1,12 +1,14 @@
 package main
 
-/*func init() {
+import "os/exec"
+
+func init() {
 	key := commandFunc{"!restart yourself", "", ""}
 	lockMap.Lock()
 	defer lockMap.Unlock()
 	botFuncs[key] = func(command string) (string, error) {
 		if key.command == command {
-			out, err := exec.Command("/etc/init.d/cocbot", "restart").Output()
+			out, err := exec.Command("/etc/init.d/cocbot", "restart", "&").Output()
 			if err != nil {
 				return "", err
 			}
@@ -17,4 +19,4 @@ package main
 		}
 		return "", nil
 	}
-}*/
+}
