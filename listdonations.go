@@ -33,6 +33,7 @@ func init() {
 			for _, v := range don {
 				msg += v.String()
 			}
+			return msg, nil
 		}
 		return "", nil
 	}
