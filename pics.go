@@ -25,7 +25,7 @@ func getRandomImage() (string, error) {
 		return "", err
 	}
 	exPath := path.Dir(ex)
-	files, err := filepath.Glob(exPath + "*.jpg")
+	files, err := filepath.Glob(exPath + string(os.PathSeparator) + "*.jpg")
 	if err != nil {
 		return "", err
 	}
