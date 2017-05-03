@@ -28,7 +28,7 @@ func init() {
 			if err != nil {
 				return "", err
 			}
-			sort.Slice(don, func(i, j int) bool { return don[i].min < don[j].min })
+			sort.Slice(don, func(i, j int) bool { return don[i].min > don[j].min })
 			msg := fmt.Sprintf("Listing donations done after %d hours and %d minutes ago\n", hours, min)
 			for _, v := range don {
 				msg += v.String()
