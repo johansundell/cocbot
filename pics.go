@@ -1,5 +1,12 @@
 package main
 
+import (
+	"errors"
+	"os"
+	"path"
+	"path/filepath"
+)
+
 func init() {
 	key := commandFunc{"!send me nude pics", "To see me nude", ""}
 	lockMap.Lock()
@@ -9,4 +16,24 @@ func init() {
 		}
 		return "", nil
 	}
+}
+
+func getRandomImage() (string, error) {
+	m := make(map[int]string)
+	ex, err := os.Executable()
+	if err != nil {
+		return "", err
+	}
+	exPath := path.Dir(ex)
+	files, err := filepath.Glob(exPath + "*.jpg")
+	if err != nil {
+		return "", err
+	}
+	for k, v := range files {
+		m[k] = v
+	}
+	for _, v := range m {
+		return v, nil
+	}
+	return "", errors.New("No files found")
 }
