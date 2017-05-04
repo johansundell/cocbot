@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"time"
@@ -36,7 +37,8 @@ func test(s *discordgo.Session) {
 			case <-ticker.C:
 				fmt.Println("ticker hit")
 				//lockMap.RLock()
-				msg, err := botFuncs[keyTopDonators]("!top donators today")
+				ctx := context.Background()
+				msg, err := botFuncs[keyTopDonators]("!top donators today", ctx)
 				//lockMap.RUnlock()
 				if err != nil {
 					log.Println(err)

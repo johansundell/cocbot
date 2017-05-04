@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"sort"
 
@@ -11,7 +12,7 @@ func init() {
 	key := commandFunc{"!show newbie", "To see our newest members and their donations", ""}
 	lockMap.Lock()
 	defer lockMap.Unlock()
-	botFuncs[key] = func(command string) (string, error) {
+	botFuncs[key] = func(command string, ctx context.Context) (string, error) {
 		if key.command == command {
 			list, _ := cocClient.GetMembers(myClanTag)
 			players := []cocapi.Player{}

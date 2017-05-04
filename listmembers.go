@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"log"
 	"strings"
 )
@@ -18,7 +19,7 @@ func init() {
 	key := commandFunc{"!list members [name]", "To see current members", ""}
 	lockMap.Lock()
 	defer lockMap.Unlock()
-	botFuncs[key] = func(command string) (string, error) {
+	botFuncs[key] = func(command string, ctx context.Context) (string, error) {
 		cmd := strings.Replace(key.command, " [name]", "", -1)
 		if strings.HasPrefix(command, cmd) {
 			mb, err := getMembers(command[len(cmd):])

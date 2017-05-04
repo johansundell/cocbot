@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"regexp"
 	"sort"
@@ -13,7 +14,7 @@ func init() {
 	key := commandFunc{"!top war players", "To see our top war whores", ""}
 	lockMap.Lock()
 	defer lockMap.Unlock()
-	botFuncs[key] = func(command string) (string, error) {
+	botFuncs[key] = func(command string, ctx context.Context) (string, error) {
 		if key.command == command {
 			list, err := cocClient.GetMembers(myClanTag)
 			if err != nil {
@@ -39,7 +40,7 @@ func init() {
 	}
 
 	key2 := commandFunc{"!top [0-9]+ war players", "To see our top NN war whores", "[0-9]+"}
-	botFuncs[key2] = func(command string) (string, error) {
+	botFuncs[key2] = func(command string, ctx context.Context) (string, error) {
 		if found, _ := regexp.MatchString(key2.command, command); found {
 			reg, err := regexp.Compile(key2.extracter)
 			if err != nil {

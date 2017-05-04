@@ -1,20 +1,36 @@
 package main
 
 import (
+	"context"
 	"errors"
 	"math/rand"
 	"os"
 	"path"
 	"path/filepath"
 	"time"
+
+	"github.com/bwmarrin/discordgo"
 )
 
 func init() {
 	key := commandFunc{"!send me nude pics", "To see me nude", ""}
 	lockMap.Lock()
 	defer lockMap.Unlock()
-	botFuncs[key] = func(command string) (string, error) {
+	botFuncs[key] = func(command string, ctx context.Context) (string, error) {
 		if key.command == command {
+			if s := ctx.Value("sess"); s != nil {
+				if m := ctx.Value("msg"); m != nil {
+					str, err := getRandomImage()
+					if err != nil {
+						return "", err
+					}
+					f, err := os.Open(str)
+					if err != nil {
+						return "", err
+					}
+					_, _ = s.(*discordgo.Session).ChannelFileSend(m.(*discordgo.MessageCreate).ChannelID, "me.jpg", f)
+				}
+			}
 		}
 		return "", nil
 	}

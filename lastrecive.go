@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"time"
 )
@@ -17,7 +18,7 @@ func init() {
 	key := commandFunc{"!what to name 2", "To list the last 10 to receive troops", ""}
 	lockMap.Lock()
 	defer lockMap.Unlock()
-	botFuncs[key] = func(command string) (string, error) {
+	botFuncs[key] = func(command string, ctx context.Context) (string, error) {
 		if key.command == command {
 			don, err := getReceive(10)
 			if err != nil {

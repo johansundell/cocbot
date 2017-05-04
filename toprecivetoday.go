@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"log"
 )
@@ -9,7 +10,7 @@ func init() {
 	key := commandFunc{"!what to name", "To see the our best recivers today", ""}
 	lockMap.Lock()
 	defer lockMap.Unlock()
-	botFuncs[key] = func(command string) (string, error) {
+	botFuncs[key] = func(command string, ctx context.Context) (string, error) {
 		if command == key.command {
 			rows, err := db.Query(sqlQueryTopReciveDonators, 10)
 			if err != nil {

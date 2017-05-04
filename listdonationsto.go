@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"strings"
 )
@@ -9,7 +10,7 @@ func init() {
 	key := commandFunc{"!last donations to [name]", "Get the 10 last donations to that member", ""}
 	lockMap.Lock()
 	defer lockMap.Unlock()
-	botFuncs[key] = func(command string) (string, error) {
+	botFuncs[key] = func(command string, ctx context.Context) (string, error) {
 		cmd := strings.Replace(key.command, " [name]", "", -1)
 		if strings.HasPrefix(command, cmd) {
 			fmt.Println("here")

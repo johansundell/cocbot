@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"sort"
@@ -17,7 +18,7 @@ func init() {
 	key := commandFunc{"!worst goblin killers", "To see our goblin hunters", ""}
 	lockMap.Lock()
 	defer lockMap.Unlock()
-	botFuncs[key] = func(command string) (string, error) {
+	botFuncs[key] = func(command string, ctx context.Context) (string, error) {
 		if key.command == command {
 			list, err := cocClient.GetMembers(myClanTag)
 			if err != nil {

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"database/sql"
 	"fmt"
 	"log"
@@ -24,7 +25,7 @@ type commandFunc struct {
 	extracter string
 }
 
-var botFuncs map[commandFunc]func(string) (string, error) = make(map[commandFunc]func(string) (string, error))
+var botFuncs map[commandFunc]func(string, context.Context) (string, error) = make(map[commandFunc]func(string, context.Context) (string, error))
 var lockMap = sync.RWMutex{}
 
 var db *sql.DB
@@ -84,7 +85,7 @@ func main() {
 			}*/
 			if channel.Name == "members_chat" {
 				channels = append(channels, channel.ID)
-				sendMessage(sess, "I am alive again")
+				//sendMessage(sess, "I am alive again")
 				return
 			}
 		}
@@ -125,28 +126,14 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	lockMap.RLock()
 	defer lockMap.RUnlock()
 	msg := ""
+	ctx := context.WithValue(context.Background(), "sess", s)
+	ctx = context.WithValue(ctx, "msg", m)
 	for _, v := range botFuncs {
-		if str, err := v(command); err != nil {
+		if str, err := v(command, ctx); err != nil {
 			log.Println(err)
 		} else {
 			msg += str
 		}
-	}
-
-	// Ugly
-	if command == "!send me nude pics" {
-		str, err := getRandomImage()
-		if err != nil {
-			log.Println(err)
-			return
-		}
-		//f, err := os.Open("IMG_20170405_142440.jpg")
-		f, err := os.Open(str)
-		if err != nil {
-			log.Println(err)
-			return
-		}
-		_, _ = s.ChannelFileSend(m.ChannelID, "me.jpg", f)
 	}
 
 	if command == "!help" {

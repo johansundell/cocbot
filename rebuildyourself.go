@@ -1,12 +1,15 @@
 package main
 
-import "os/exec"
+import (
+	"context"
+	"os/exec"
+)
 
 func init() {
 	key := commandFunc{"!rebuild yourself", "", ""}
 	lockMap.Lock()
 	defer lockMap.Unlock()
-	botFuncs[key] = func(command string) (string, error) {
+	botFuncs[key] = func(command string, ctx context.Context) (string, error) {
 		if key.command == command {
 			out, err := exec.Command("go", "build").Output()
 			if err != nil {
