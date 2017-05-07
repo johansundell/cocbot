@@ -18,10 +18,10 @@ func init() {
 			m["Asia/Calcutta"] = "Brown and K2"
 			m["Europe/Stockholm"] = "Sudde"
 			m["Asia/Jakarta"] = "Tommy"
-			m["EST"] = "James and Blac"
+			m["US/Eastern"] = "James and Blac"
 			m["Europe/London"] = "Stube, Blackfear, Sway and E1lioT"
 			m["US/Central"] = "wjn2448"
-			m["Canada/Eastern"] = "Heliloggerjay"
+			m["Canada/Pacific"] = "Heliloggerjay"
 
 			msg := ""
 			t := time.Now()
