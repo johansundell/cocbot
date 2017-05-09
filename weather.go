@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"strings"
 )
@@ -23,14 +24,23 @@ func init() {
 			if err := dec.Decode(&f); err != nil {
 				return "", err
 			}
-			return strings.Replace(f.ForecastMessages.English, ".  ", ".\n", -1), nil
+			direction := ""
+			switch {
+			case f.CurrentLoot.Trend > 0:
+				direction = "upwards"
+			case f.CurrentLoot.Trend < 0:
+				direction = "downward"
+			default:
+				direction = "stable"
+			}
+			return fmt.Sprintf("**Loot index on a 10 scale is %s and trend is %s**\n\n", f.LootIndexString, direction) + strings.Replace(f.ForecastMessages.English, ".  ", ".\n", -1), nil
 		}
 		return "", nil
 	}
 }
 
 type forcast struct {
-	/*CurrentLoot struct {
+	CurrentLoot struct {
 		TotalPlayers            int `json:"totalPlayers"`
 		Trend                   int `json:"trend"`
 		LootMinutes             int `json:"lootMinutes"`
@@ -42,11 +52,11 @@ type forcast struct {
 		AttackablePlayers       int `json:"attackablePlayers"`
 		AttackablePlayersChange int `json:"attackablePlayersChange"`
 	} `json:"currentLoot"`
-	MainColorShadeNow string `json:"mainColorShadeNow"`
-	LootIndexString   string `json:"lootIndexString"`
-	BgColor           string `json:"bgColor"`
-	FgColor           string `json:"fgColor"`
-	ForecastWordNow   string `json:"forecastWordNow"`*/
+	//MainColorShadeNow string `json:"mainColorShadeNow"`
+	LootIndexString string `json:"lootIndexString"`
+	/*BgColor           string `json:"bgColor"`
+	FgColor           string `json:"fgColor"`*/
+	ForecastWordNow  string `json:"forecastWordNow"`
 	ForecastMessages struct {
 		English string `json:"english"`
 		/*Spanish     string `json:"spanish"`
