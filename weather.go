@@ -33,7 +33,8 @@ func init() {
 			default:
 				direction = "stable"
 			}
-			return fmt.Sprintf("**Loot index on a 10 scale is %s and trend is %s**\n\n", f.LootIndexString, direction) + strings.Replace(f.ForecastMessages.English, ".  ", ".\n", -1), nil
+			return fmt.Sprintf("**Loot index on a 10 scale is %s and trend is %s**\n\n", f.LootIndexString, direction) +
+				strings.Replace(f.ForecastMessages.English, ".  ", ".\n", -1), nil
 		}
 		return "", nil
 	}
