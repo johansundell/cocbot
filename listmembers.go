@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"log"
 	"strings"
 )
 
@@ -11,8 +10,9 @@ type MemberList struct {
 }
 
 type Member struct {
-	Name string
-	Tag  string
+	Name   string
+	Tag    string
+	Active int
 }
 
 func init() {
@@ -28,7 +28,14 @@ func init() {
 			}
 			msg := ""
 			for _, v := range mb.Members {
-				msg += v.Name + " - " + v.Tag + "\n"
+				status := "inactive"
+				if v.Active == 1 {
+					status = "active"
+				}
+				msg += v.Name + " - " + v.Tag + " and status is " + status + "\n"
+			}
+			if len(msg) >= 2000 {
+				msg = "Too broad search, limit it down"
 			}
 			return msg, nil
 		}
@@ -38,16 +45,15 @@ func init() {
 
 func getMembers(search string) (MemberList, error) {
 	search = strings.TrimSpace(search)
-	log.Println(search)
-	rows, err := db.Query("SELECT tag, name FROM members WHERE active = 1 AND name LIKE ? ORDER BY name", "%"+search+"%")
+	rows, err := db.Query("SELECT tag, name, active FROM members WHERE name LIKE ? ORDER BY active, name", "%"+search+"%")
 	if err != nil {
 		return MemberList{}, err
 	}
-
+	defer rows.Close()
 	mb := MemberList{}
 	for rows.Next() {
 		m := Member{}
-		rows.Scan(&m.Tag, &m.Name)
+		rows.Scan(&m.Tag, &m.Name, &m.Active)
 		mb.Members = append(mb.Members, m)
 	}
 	return mb, nil
