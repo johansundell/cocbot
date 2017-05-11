@@ -33,6 +33,10 @@ var mysqlUser, mysqlPass, mysqlDb, mysqlHost string
 var myClanTag, myKey string
 var cocClient cocapi.Client
 
+var guild string
+var coLeaderId string
+var leaderId string
+
 func init() {
 	mysqlDb = "cocsniffer"
 	mysqlHost = os.Getenv("MYSQL_COC_HOST")
@@ -77,6 +81,18 @@ func main() {
 		if event.Guild.Unavailable {
 			return
 		}
+		guild = event.ID
+		if roles, err := sess.GuildRoles(guild); err == nil {
+			for _, v := range roles {
+				fmt.Println(v.ID, v.Name)
+				if v.Name == "@Co-Leader" {
+					coLeaderId = v.ID
+				}
+				if v.Name == "@Leader" {
+					leaderId = v.ID
+				}
+			}
+		}
 
 		for _, channel := range event.Guild.Channels {
 			/*if channel.ID == event.Guild.ID {
@@ -113,6 +129,14 @@ func main() {
 
 func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	fmt.Println(m.Author.ID, m.Author.Username, m.Author.Username+"#"+m.Author.Discriminator, m.Content)
+
+	/*member, _ := s.GuildMember(guild, m.Author.ID)
+	fmt.Println(member.Roles)
+	roles, err := s.GuildRoles(guild)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println(roles[0].Name)*/
 
 	// Ignore all messages created by the bot itself
 	if m.Author.ID == BotID {
