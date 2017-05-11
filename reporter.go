@@ -52,7 +52,7 @@ func checkMembers(s *discordgo.Session) {
 				donations := 0
 				if err := db.QueryRow("SELECT current_donations FROM members WHERE member_id = ?", id).Scan(&donations); err != nil {
 					log.Println(err)
-				} else {
+				} /*else {
 					//log.Println(m.Donations, donations)
 					if m.Donations != donations {
 						if _, err := db.Exec("UPDATE members SET prev_donations = ?, current_donations = ?, last_donation_time = NOW() WHERE member_id = ?", donations, m.Donations, id); err != nil {
@@ -64,7 +64,7 @@ func checkMembers(s *discordgo.Session) {
 							}
 						}
 					}
-				}
+				}*/
 			}
 		}
 		if m.Role == "member" && m.Donations >= 1000 {

@@ -119,6 +119,8 @@ func main() {
 	}
 	go reporter(dg)
 
+	go reporterDuplicate(dg)
+
 	go test(dg)
 
 	fmt.Println("Bot is now running.  Press CTRL-C to exit.")
