@@ -11,6 +11,11 @@ func init() {
 	defer lockMap.Unlock()
 	botFuncs[key] = func(command string, ctx context.Context) (string, error) {
 		if key.command == command {
+			s, m, err := getSessionsAndMessageFromContext(ctx)
+			if err != nil {
+				return "", err
+			}
+			s.ChannelMessageSend(m.ChannelID, "Working on it master, new version of self soon done")
 			out, err := exec.Command("go", "build").Output()
 			if err != nil {
 				return "", err
