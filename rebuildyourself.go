@@ -16,6 +16,7 @@ func init() {
 				return "", err
 			}
 			s.ChannelMessageSend(m.ChannelID, "Working on it master, new version of self soon done")
+			s.ChannelTyping(m.ChannelID)
 			out, err := exec.Command("go", "build").Output()
 			if err != nil {
 				return "", err
