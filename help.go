@@ -48,7 +48,7 @@ func init() {
 			}
 			mess, _ := s.ChannelMessageSend(ch.ID, msg)
 			s.ChannelMessagePin(ch.ID, mess.ID)
-			msg = "Sent you the help over a private channel"
+			msg = "Sent you the help over a private channel, don't tell anyone our secret"
 			return msg, nil
 		}
 		return "", nil
