@@ -34,6 +34,21 @@ func init() {
 				}
 			}
 			msg += "```"
+			s, m, err := getSessionsAndMessageFromContext(ctx)
+			if err != nil {
+				return "", err
+			}
+			ch, _ := s.UserChannelCreate(m.Author.ID)
+			u, _ := s.User("@me")
+			pinned, _ := s.ChannelMessagesPinned(ch.ID)
+			for _, v := range pinned {
+				if v.Author.ID == u.ID {
+					s.ChannelMessageUnpin(ch.ID, v.ID)
+				}
+			}
+			mess, _ := s.ChannelMessageSend(ch.ID, msg)
+			s.ChannelMessagePin(ch.ID, mess.ID)
+			msg = "Sent you the help over a private channel"
 			return msg, nil
 		}
 		return "", nil
