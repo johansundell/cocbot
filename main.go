@@ -37,6 +37,10 @@ const (
 	categoryFun    category = "=== Fun ==="
 )
 
+const (
+	securityMessage = "**You are not a Co-Leader, security lockdown in sector 4**"
+)
+
 var botFuncs map[commandFunc]func(string, context.Context) (string, error) = make(map[commandFunc]func(string, context.Context) (string, error))
 var lockMap = sync.RWMutex{}
 
@@ -165,31 +169,6 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 			msg += str
 		}
 	}
-
-	/*if command == "!help" {
-		var keys = make([]commandFunc, 0, len(botFuncs))
-		for k := range botFuncs {
-			keys = append(keys, k)
-		}
-		sort.Slice(keys, func(i, j int) bool {
-			if keys[i].category == keys[j].category {
-				return keys[i].command < keys[j].command
-			}
-			return keys[i].category < keys[j].category
-		})
-		msg = "**COCBOT COMMANDS**\n```"
-		var c category
-		for _, v := range keys {
-			if v.category != categoryHidden {
-				if c != v.category {
-					msg += fmt.Sprintf("\n%s\n", v.category)
-					c = v.category
-				}
-				msg += fmt.Sprintf("%s - %s\n", v.command, v.helpText)
-			}
-		}
-		msg += "```"
-	}*/
 
 	if command == "!hidden" && isSudde(m) {
 		//s.MessageReactionAdd(m.ChannelID, m.ID, ":raising_hand:")

@@ -1,6 +1,9 @@
 package main
 
-import "context"
+import (
+	"context"
+	"fmt"
+)
 
 func init() {
 	key := commandFunc{"!status", "", "", categoryHidden}
@@ -8,11 +11,19 @@ func init() {
 	defer lockMap.Unlock()
 	botFuncs[key] = func(command string, ctx context.Context) (string, error) {
 		if command == key.command {
-			s, _, err := getSessionsAndMessageFromContext(ctx)
+			s, m, err := getSessionsAndMessageFromContext(ctx)
 			if err != nil {
 				return "", err
 			}
-			sendMessage(s, "Works", true)
+			if isSudde(m) {
+				if len(channels) != 0 {
+					c, _ := s.Channel(channels[0])
+					msg := fmt.Sprintf("Reporting on channel %s", c.Name)
+					sendMessage(s, msg, false)
+				}
+			} else {
+				return securityMessage, nil
+			}
 			//return "Hi master", nil
 		}
 		return "", nil

@@ -29,7 +29,7 @@ func init() {
 					return "Could not find member " + name + " or (s)he had no warnings", nil
 				}
 			} else {
-				return "**You are not a Co-Leader, security lockdown in sector 4**", nil
+				return securityMessage, nil
 			}
 		}
 		return "", nil

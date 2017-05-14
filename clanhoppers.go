@@ -35,7 +35,7 @@ func init() {
 				msg := "**These are our clan hoppers\n**"
 				return msg + strings.Join(members, "\n"), nil
 			} else {
-				return "**You are not a Co-Leader, security lockdown in sector 4**", nil
+				return securityMessage, nil
 			}
 		}
 		return "", nil
