@@ -11,7 +11,7 @@ import (
 )
 
 func init() {
-	key := commandFunc{"!top war players", "To see our top war whores", ""}
+	key := commandFunc{"!top war players", "To see our top war whores", "", categoryStats}
 	lockMap.Lock()
 	defer lockMap.Unlock()
 	botFuncs[key] = func(command string, ctx context.Context) (string, error) {
@@ -39,7 +39,7 @@ func init() {
 		return "", nil
 	}
 
-	key2 := commandFunc{"!top [0-9]+ war players", "To see our top NN war whores", "[0-9]+"}
+	key2 := commandFunc{"!top [0-9]+ war players", "To see our top NN war whores", "[0-9]+", categoryStats}
 	botFuncs[key2] = func(command string, ctx context.Context) (string, error) {
 		if found, _ := regexp.MatchString(key2.command, command); found {
 			reg, err := regexp.Compile(key2.extracter)

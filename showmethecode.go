@@ -3,7 +3,7 @@ package main
 import "context"
 
 func init() {
-	key := commandFunc{"!show me the code", "To view me", ""}
+	key := commandFunc{"!show me the code", "To view me", "", categoryFun}
 	lockMap.Lock()
 	defer lockMap.Unlock()
 	botFuncs[key] = func(command string, ctx context.Context) (string, error) {

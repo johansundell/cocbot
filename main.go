@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"sort"
 	"strings"
 	"sync"
 
@@ -23,7 +24,19 @@ type commandFunc struct {
 	command   string
 	helpText  string
 	extracter string
+	category  category
 }
+
+type category string
+
+const (
+	categoryStats  category = "=== Stats ==="
+	categoryAdmin  category = "=== Admin ==="
+	catgoryHelp    category = "=== Help ==="
+	categoryHidden category = "=== Hidden ==="
+	categorySearch category = "=== Search ==="
+	categoryFun    category = "=== Fun ==="
+)
 
 var botFuncs map[commandFunc]func(string, context.Context) (string, error) = make(map[commandFunc]func(string, context.Context) (string, error))
 var lockMap = sync.RWMutex{}
@@ -132,14 +145,6 @@ func main() {
 func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	fmt.Println(m.Author.ID, m.Author.Username, m.Author.Username+"#"+m.Author.Discriminator, m.Content)
 
-	/*member, _ := s.GuildMember(guild, m.Author.ID)
-	fmt.Println(member.Roles)
-	roles, err := s.GuildRoles(guild)
-	if err != nil {
-		fmt.Println(err)
-	}
-	fmt.Println(roles[0].Name)*/
-
 	// Ignore all messages created by the bot itself
 	if m.Author.ID == BotID {
 		return
@@ -163,10 +168,30 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	}
 
 	if command == "!help" {
+		var keys = make([]commandFunc, 0, len(botFuncs))
+		for k := range botFuncs {
+			keys = append(keys, k)
+		}
+		sort.Slice(keys, func(i, j int) bool {
+			if keys[i].category == keys[j].category {
+				return keys[i].command < keys[j].command
+			}
+			return keys[i].category < keys[j].category
+		})
 		msg = "**COCBOT COMMANDS**\n```"
-		for k, _ := range botFuncs {
+		/*for k, _ := range botFuncs {
 			if k.helpText != "" {
 				msg += fmt.Sprintf("%s - %s\n", k.command, k.helpText)
+			}
+		}*/
+		var c category
+		for _, v := range keys {
+			if v.category != categoryHidden {
+				if c != v.category {
+					msg += fmt.Sprintf("\n%s\n", v.category)
+					c = v.category
+				}
+				msg += fmt.Sprintf("%s - %s\n", v.command, v.helpText)
 			}
 		}
 		msg += "```"

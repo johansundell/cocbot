@@ -15,7 +15,7 @@ type goblinPlayer struct {
 }
 
 func init() {
-	key := commandFunc{"!worst goblin killers", "To see our goblin hunters", ""}
+	key := commandFunc{"!worst goblin killers", "To see our goblin hunters", "", categoryFun}
 	lockMap.Lock()
 	defer lockMap.Unlock()
 	botFuncs[key] = func(command string, ctx context.Context) (string, error) {

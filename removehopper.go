@@ -6,7 +6,7 @@ import (
 )
 
 func init() {
-	key := commandFunc{"!remove hopper [name]", "Remove hopper warnings", ""}
+	key := commandFunc{"!remove hopper [name]", "Remove hopper warnings", "", categoryAdmin}
 	lockMap.Lock()
 	defer lockMap.Unlock()
 	botFuncs[key] = func(command string, ctx context.Context) (string, error) {

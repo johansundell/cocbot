@@ -7,7 +7,7 @@ import (
 )
 
 func init() {
-	key := commandFunc{"!what to name", "To see the our best recivers today", ""}
+	key := commandFunc{"!what to name", "To see the our best recivers today", "", categoryStats}
 	lockMap.Lock()
 	defer lockMap.Unlock()
 	botFuncs[key] = func(command string, ctx context.Context) (string, error) {

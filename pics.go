@@ -13,7 +13,7 @@ import (
 )
 
 func init() {
-	key := commandFunc{"!send me nude pics", "To see me nude", ""}
+	key := commandFunc{"!send me nude pics", "To see me nude", "", categoryFun}
 	lockMap.Lock()
 	defer lockMap.Unlock()
 	botFuncs[key] = func(command string, ctx context.Context) (string, error) {

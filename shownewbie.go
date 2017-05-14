@@ -9,7 +9,7 @@ import (
 )
 
 func init() {
-	key := commandFunc{"!show newbie", "To see our newest members and their donations", ""}
+	key := commandFunc{"!show newbie", "To see our newest members and their donations", "", categoryAdmin}
 	lockMap.Lock()
 	defer lockMap.Unlock()
 	botFuncs[key] = func(command string, ctx context.Context) (string, error) {

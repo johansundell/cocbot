@@ -18,7 +18,7 @@ func (v donations) String() string {
 }
 
 func init() {
-	key := commandFunc{"!last donations", "To list the last 10 donations", ""}
+	key := commandFunc{"!last donations", "To list the last 10 donations", "", categoryStats}
 	lockMap.Lock()
 	defer lockMap.Unlock()
 	botFuncs[key] = func(command string, ctx context.Context) (string, error) {
@@ -44,7 +44,7 @@ func init() {
 		return "", nil
 	}
 
-	key2 := commandFunc{"!last donations for [name]", "To see the last donations by that member", ""}
+	key2 := commandFunc{"!last donations for [name]", "To see the last donations by that member", "", categoryStats}
 	botFuncs[key2] = func(command string, ctx context.Context) (string, error) {
 		cmd := strings.Replace(key2.command, " [name]", "", -1)
 		if strings.HasPrefix(command, cmd) {

@@ -5,7 +5,7 @@ import (
 )
 
 func init() {
-	key := commandFunc{"!sudde", "Gives out your personal discord id", ""}
+	key := commandFunc{"!sudde", "Gives out your personal discord id", "", categoryAdmin}
 	lockMap.Lock()
 	defer lockMap.Unlock()
 	botFuncs[key] = func(command string, ctx context.Context) (string, error) {

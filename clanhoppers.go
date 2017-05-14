@@ -10,7 +10,7 @@ import (
 )
 
 func init() {
-	key := commandFunc{"!clan hoppers", "List clan hoppers", ""}
+	key := commandFunc{"!clan hoppers", "List clan hoppers", "", categoryAdmin}
 	lockMap.Lock()
 	defer lockMap.Unlock()
 	botFuncs[key] = func(command string, ctx context.Context) (string, error) {

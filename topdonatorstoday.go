@@ -12,7 +12,7 @@ type topDonator struct {
 	amount int64
 }
 
-var keyTopDonators = commandFunc{"!top donators today", "To see the our best donators today", ""}
+var keyTopDonators = commandFunc{"!top donators today", "To see the our best donators today", "", categoryStats}
 
 func init() {
 	lockMap.Lock()

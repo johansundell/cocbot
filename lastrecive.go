@@ -15,7 +15,7 @@ func (v receive) String() string {
 }
 
 func init() {
-	key := commandFunc{"!what to name 2", "To list the last 10 to receive troops", ""}
+	key := commandFunc{"!what to name 2", "To list the last 10 to receive troops", "", categoryStats}
 	lockMap.Lock()
 	defer lockMap.Unlock()
 	botFuncs[key] = func(command string, ctx context.Context) (string, error) {

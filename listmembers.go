@@ -16,7 +16,7 @@ type Member struct {
 }
 
 func init() {
-	key := commandFunc{"!list members [name]", "To see current members", ""}
+	key := commandFunc{"!list members [name]", "To see current members", "", categorySearch}
 	lockMap.Lock()
 	defer lockMap.Unlock()
 	botFuncs[key] = func(command string, ctx context.Context) (string, error) {

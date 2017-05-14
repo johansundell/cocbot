@@ -6,7 +6,7 @@ import (
 )
 
 func init() {
-	key := commandFunc{"!fetch your code", "", ""}
+	key := commandFunc{"!fetch your code", "", "", categoryAdmin}
 	lockMap.Lock()
 	defer lockMap.Unlock()
 	botFuncs[key] = func(command string, ctx context.Context) (string, error) {

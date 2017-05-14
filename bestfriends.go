@@ -15,7 +15,7 @@ type friendPlayer struct {
 }
 
 func init() {
-	key := commandFunc{"!best friends", "To see our 10 best friends", ""}
+	key := commandFunc{"!best friends", "To see our 10 best friends", "", categoryStats}
 	lockMap.Lock()
 	defer lockMap.Unlock()
 	botFuncs[key] = func(command string, ctx context.Context) (string, error) {
