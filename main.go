@@ -192,7 +192,7 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 		msg += "```"
 	}
 
-	if command == "!hidden" && m.Author.Username+"#"+m.Author.Discriminator == "sudde#1958" {
+	if command == "!hidden" && isSudde(m) {
 		//s.MessageReactionAdd(m.ChannelID, m.ID, ":raising_hand:")
 		msg = "**COCBOT COMMANDS**\n```"
 		for k, _ := range botFuncs {
@@ -206,4 +206,11 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	if msg != "" {
 		s.ChannelMessageSend(m.ChannelID, msg)
 	}
+}
+
+func isSudde(m *discordgo.MessageCreate) bool {
+	if m.Author.Username+"#"+m.Author.Discriminator == "sudde#1958" {
+		return true
+	}
+	return false
 }

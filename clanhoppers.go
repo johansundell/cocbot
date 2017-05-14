@@ -19,7 +19,7 @@ func init() {
 			if err != nil {
 				return "", err
 			}
-			if doesMemberHasAdminAccess(s, msg) {
+			if doesMemberHasAdminAccess(s, msg) || isSudde(msg) {
 				rows, err := db.Query("SELECT name FROM members WHERE active = 1 AND exited > 0")
 				defer rows.Close()
 				if err != nil {

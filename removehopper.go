@@ -16,7 +16,7 @@ func init() {
 			if err != nil {
 				return "", err
 			}
-			if doesMemberHasAdminAccess(s, msg) {
+			if doesMemberHasAdminAccess(s, msg) || isSudde(msg) {
 				name := strings.TrimSpace(command[len(cmd):])
 				if len(name) > 0 {
 					res, err := db.Exec("UPDATE members SET exited = 0 WHERE name = ?", name)
