@@ -11,7 +11,7 @@ func init() {
 	defer lockMap.Unlock()
 	botFuncs[key] = func(command string, ctx context.Context) (string, error) {
 		if command == key.command {
-			out, err := exec.Command("go", "build").Output()
+			out, err := exec.Command("uptime").Output()
 			if err != nil {
 				return "", err
 			}
