@@ -16,6 +16,7 @@ func init() {
 				return "", err
 			}
 			s.ChannelMessageSend(m.ChannelID, "On it master")
+			s.ChannelTyping(m.ChannelID)
 			out, err := exec.Command("git", "pull").Output()
 			if err != nil {
 				return "", err

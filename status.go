@@ -20,6 +20,7 @@ func init() {
 					c, _ := s.Channel(channels[0])
 					msg := fmt.Sprintf("Reporting on channel %s", c.Name)
 					sendMessage(s, msg, false)
+
 				}
 			} else {
 				return securityMessage, nil
