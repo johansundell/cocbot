@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"sort"
 	"strings"
 	"sync"
 
@@ -167,7 +166,7 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 		}
 	}
 
-	if command == "!help" {
+	/*if command == "!help" {
 		var keys = make([]commandFunc, 0, len(botFuncs))
 		for k := range botFuncs {
 			keys = append(keys, k)
@@ -190,7 +189,7 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 			}
 		}
 		msg += "```"
-	}
+	}*/
 
 	if command == "!hidden" && isSudde(m) {
 		//s.MessageReactionAdd(m.ChannelID, m.ID, ":raising_hand:")
