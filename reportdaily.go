@@ -44,7 +44,7 @@ func test(s *discordgo.Session) {
 					log.Println(err)
 				} else {
 					fmt.Println(msg)
-					sendMessage(s, msg)
+					sendMessage(s, msg, true)
 				}
 				t = getTime()
 				t = t.Add(time.Hour * time.Duration(24))

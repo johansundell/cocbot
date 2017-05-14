@@ -28,7 +28,7 @@ func reporterDuplicate(s *discordgo.Session) {
 					}
 					rows.Close()
 					if len(msg) > 0 {
-						sendMessage(s, msg)
+						sendMessage(s, msg, true)
 					}
 				}
 

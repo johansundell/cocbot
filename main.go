@@ -179,11 +179,6 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 			return keys[i].category < keys[j].category
 		})
 		msg = "**COCBOT COMMANDS**\n```"
-		/*for k, _ := range botFuncs {
-			if k.helpText != "" {
-				msg += fmt.Sprintf("%s - %s\n", k.command, k.helpText)
-			}
-		}*/
 		var c category
 		for _, v := range keys {
 			if v.category != categoryHidden {
