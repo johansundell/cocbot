@@ -123,10 +123,6 @@ func main() {
 		}
 	})
 
-	/*dg.AddHandler(func(s *discordgo.Session, event *discordgo.MessageReactionAdd) {
-		fmt.Println(event.Emoji)
-	})*/
-
 	// Open the websocket and begin listening.
 	err = dg.Open()
 	if err != nil {
@@ -171,7 +167,6 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	}
 
 	if command == "!hidden" && isSudde(m) {
-		//s.MessageReactionAdd(m.ChannelID, m.ID, ":raising_hand:")
 		msg = "**COCBOT COMMANDS**\n```"
 		for k, _ := range botFuncs {
 			if k.helpText == "" {
