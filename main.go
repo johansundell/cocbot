@@ -182,7 +182,12 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 		em.Footer = &discordgo.MessageEmbedFooter{}
 		em.Footer.Text = "No bytes were killed while making this message"
 		em.Description = msg
+		em.Color = 11584734
+
 		s.ChannelMessageSendEmbed(m.ChannelID, &em)
+		/*if pin, err := ctx.Value("pin").(bool); err && pin {
+			log.Println("works")
+		}*/
 	}
 }
 
