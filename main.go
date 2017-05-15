@@ -177,7 +177,12 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	}
 
 	if msg != "" {
-		s.ChannelMessageSend(m.ChannelID, msg)
+		//s.ChannelMessageSend(m.ChannelID, msg)
+		em := discordgo.MessageEmbed{}
+		em.Footer = &discordgo.MessageEmbedFooter{}
+		em.Footer.Text = "No bytes were killed while making this message"
+		em.Description = msg
+		s.ChannelMessageSendEmbed(m.ChannelID, &em)
 	}
 }
 
