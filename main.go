@@ -14,6 +14,7 @@ import (
 	"github.com/bwmarrin/discordgo"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/johansundell/cocapi"
+	"github.com/ugjka/cleverbot-go"
 )
 
 var (
@@ -50,6 +51,8 @@ var db *sql.DB
 var mysqlUser, mysqlPass, mysqlDb, mysqlHost string
 var myClanTag, myKey string
 var cocClient cocapi.Client
+var cbotKey string
+var cbot *cleverbot.Session
 
 var guild string
 var coLeaderId string
@@ -65,10 +68,13 @@ func init() {
 	Token = os.Getenv("DICS_TOKEN")
 	emailTo = os.Getenv("EMAIL_TO")
 	emailFrom = os.Getenv("EMAIL_FROM")
+	cbotKey = os.Getenv("CBOT_KEY")
 }
 
 func main() {
 	cocClient = cocapi.NewClient(myKey)
+
+	cbot = cleverbot.New(cbotKey)
 
 	dg, err := discordgo.New("Bot " + Token)
 	if err != nil {
@@ -148,34 +154,42 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 
 	// Ignore all messages created by the bot itself
 	if m.Author.ID == BotID {
+		log.Println("me")
 		return
 	}
-
-	command := strings.ToLower(m.Content)
-	if strings.Contains(command, "! ") {
-		command = strings.Replace(command, "! ", "!", 1)
-	}
-	lockMap.RLock()
-	defer lockMap.RUnlock()
 	msg := ""
-	ctx := context.WithValue(context.Background(), "sess", s)
-	ctx = context.WithValue(ctx, "msg", m)
-	for _, v := range botFuncs {
-		if str, err := v(ctx, command); err != nil {
-			log.Println(err)
-		} else {
-			msg += str
+	if strings.HasPrefix(m.Content, "!") {
+		command := strings.ToLower(m.Content)
+		if strings.Contains(command, "! ") {
+			command = strings.Replace(command, "! ", "!", 1)
 		}
-	}
+		lockMap.RLock()
+		defer lockMap.RUnlock()
 
-	if command == "!hidden" && isSudde(m) {
-		msg = "**COCBOT COMMANDS**\n```"
-		for k, _ := range botFuncs {
-			if k.helpText == "" {
-				msg += fmt.Sprintf("%s - %s\n", k.command, k.helpText)
+		ctx := context.WithValue(context.Background(), "sess", s)
+		ctx = context.WithValue(ctx, "msg", m)
+		for _, v := range botFuncs {
+			if str, err := v(ctx, command); err != nil {
+				log.Println(err)
+			} else {
+				msg += str
 			}
 		}
-		msg += "```"
+
+		if command == "!hidden" && isSudde(m) {
+			msg = "**COCBOT COMMANDS**\n```"
+			for k, _ := range botFuncs {
+				if k.helpText == "" {
+					msg += fmt.Sprintf("%s - %s\n", k.command, k.helpText)
+				}
+			}
+			msg += "```"
+		}
+	} else if strings.Contains(m.Content, "<@"+BotID+">") {
+		str := strings.Replace(m.Content, "<@"+BotID+">", "", -1)
+		//log.Println(str)
+		s.ChannelTyping(m.ChannelID)
+		msg, _ = cbot.Ask(str)
 	}
 
 	if msg != "" {
