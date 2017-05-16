@@ -12,7 +12,7 @@ func init() {
 	key := commandFunc{"!weather", "Gives a loot forcast", "", categoryFun}
 	lockMap.Lock()
 	defer lockMap.Unlock()
-	botFuncs[key] = func(command string, ctx context.Context) (string, error) {
+	botFuncs[key] = func(ctx context.Context, command string) (string, error) {
 		if command == key.command {
 			resp, err := http.Get("http://clashofclansforecaster.com/STATS.json")
 			if err != nil {

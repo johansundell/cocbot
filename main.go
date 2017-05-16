@@ -43,7 +43,7 @@ const (
 	securityMessage = "**You are not a Co-Leader, security lockdown in sector 4**"
 )
 
-var botFuncs map[commandFunc]func(string, context.Context) (string, error) = make(map[commandFunc]func(string, context.Context) (string, error))
+var botFuncs map[commandFunc]func(ctx context.Context, command string) (string, error) = make(map[commandFunc]func(ctx context.Context, command string) (string, error))
 var lockMap = sync.RWMutex{}
 
 var db *sql.DB
@@ -161,7 +161,7 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	ctx := context.WithValue(context.Background(), "sess", s)
 	ctx = context.WithValue(ctx, "msg", m)
 	for _, v := range botFuncs {
-		if str, err := v(command, ctx); err != nil {
+		if str, err := v(ctx, command); err != nil {
 			log.Println(err)
 		} else {
 			msg += str

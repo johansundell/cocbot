@@ -10,7 +10,7 @@ func init() {
 	key := commandFunc{"!help", "List the help", "", catgoryHelp}
 	lockMap.Lock()
 	defer lockMap.Unlock()
-	botFuncs[key] = func(command string, ctx context.Context) (string, error) {
+	botFuncs[key] = func(ctx context.Context, command string) (string, error) {
 		if command == key.command {
 			var keys = make([]commandFunc, 0, len(botFuncs))
 			for k := range botFuncs {
@@ -48,6 +48,7 @@ func init() {
 			}
 			mess, _ := s.ChannelMessageSend(ch.ID, msg)
 			s.ChannelMessagePin(ch.ID, mess.ID)
+			ctx = context.WithValue(ctx, "pin", true)
 			msg = "Sent you the help over a private channel, don't tell anyone our secret"
 			return msg, nil
 		}

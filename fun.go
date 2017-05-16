@@ -10,7 +10,7 @@ func init() {
 	key := commandFunc{"!game", "Lets play a game", "", categoryFun}
 	lockMap.Lock()
 	defer lockMap.Unlock()
-	botFuncs[key] = func(command string, ctx context.Context) (string, error) {
+	botFuncs[key] = func(ctx context.Context, command string) (string, error) {
 		if command == key.command {
 			s, m, err := getSessionsAndMessageFromContext(ctx)
 			if err != nil {

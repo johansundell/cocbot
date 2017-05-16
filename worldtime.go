@@ -12,7 +12,7 @@ func init() {
 	key := commandFunc{"!world time", "Show some of our members time", "", categoryFun}
 	lockMap.Lock()
 	defer lockMap.Unlock()
-	botFuncs[key] = func(command string, ctx context.Context) (string, error) {
+	botFuncs[key] = func(ctx context.Context, command string) (string, error) {
 		if strings.Contains(command, key.command) {
 			m := make(map[string]string)
 			m["Asia/Calcutta"] = "Brown and K2"

@@ -9,7 +9,7 @@ func init() {
 	key := commandFunc{"!rebuild yourself", "", "", categoryAdmin}
 	lockMap.Lock()
 	defer lockMap.Unlock()
-	botFuncs[key] = func(command string, ctx context.Context) (string, error) {
+	botFuncs[key] = func(ctx context.Context, command string) (string, error) {
 		if key.command == command {
 			s, m, err := getSessionsAndMessageFromContext(ctx)
 			if err != nil {

@@ -10,7 +10,7 @@ func init() {
 	key := commandFunc{"!why do i suck at", "", "", categoryHidden}
 	lockMap.Lock()
 	defer lockMap.Unlock()
-	botFuncs[key] = func(command string, ctx context.Context) (string, error) {
+	botFuncs[key] = func(ctx context.Context, command string) (string, error) {
 		if strings.HasPrefix(command, key.command) {
 			out, err := exec.Command("fortune", "tao").Output()
 			if err != nil {

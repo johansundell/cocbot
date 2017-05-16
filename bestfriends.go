@@ -18,7 +18,7 @@ func init() {
 	key := commandFunc{"!best friends", "To see our 10 best friends", "", categoryStats}
 	lockMap.Lock()
 	defer lockMap.Unlock()
-	botFuncs[key] = func(command string, ctx context.Context) (string, error) {
+	botFuncs[key] = func(ctx context.Context, command string) (string, error) {
 		if key.command == command {
 			list, err := cocClient.GetMembers(myClanTag)
 			if err != nil {

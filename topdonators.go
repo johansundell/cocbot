@@ -11,7 +11,7 @@ func init() {
 	key := commandFunc{"!top donators", "To see our best donatots", "", categoryStats}
 	lockMap.Lock()
 	defer lockMap.Unlock()
-	botFuncs[key] = func(command string, ctx context.Context) (string, error) {
+	botFuncs[key] = func(ctx context.Context, command string) (string, error) {
 		if key.command == command {
 			list, _ := cocClient.GetMembers(myClanTag)
 			sort.Slice(list.Items, func(i, j int) bool { return list.Items[i].Donations > list.Items[j].Donations })

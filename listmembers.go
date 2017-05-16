@@ -19,7 +19,7 @@ func init() {
 	key := commandFunc{"!list members [name]", "To see current members", "", categorySearch}
 	lockMap.Lock()
 	defer lockMap.Unlock()
-	botFuncs[key] = func(command string, ctx context.Context) (string, error) {
+	botFuncs[key] = func(ctx context.Context, command string) (string, error) {
 		cmd := strings.Replace(key.command, " [name]", "", -1)
 		if strings.HasPrefix(command, cmd) {
 			mb, err := getMembers(command[len(cmd):])

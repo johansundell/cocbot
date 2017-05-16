@@ -16,7 +16,7 @@ func init() {
 	key := commandFunc{"!send me nude pics", "To see me nude", "", categoryFun}
 	lockMap.Lock()
 	defer lockMap.Unlock()
-	botFuncs[key] = func(command string, ctx context.Context) (string, error) {
+	botFuncs[key] = func(ctx context.Context, command string) (string, error) {
 		if key.command == command {
 			if s := ctx.Value("sess"); s != nil {
 				if m := ctx.Value("msg"); m != nil {

@@ -21,7 +21,7 @@ func init() {
 	key := commandFunc{"!last donations", "To list the last 10 donations", "", categoryStats}
 	lockMap.Lock()
 	defer lockMap.Unlock()
-	botFuncs[key] = func(command string, ctx context.Context) (string, error) {
+	botFuncs[key] = func(ctx context.Context, command string) (string, error) {
 		if key.command == command {
 			don, err := getDonations(10)
 			if err != nil {
@@ -45,7 +45,7 @@ func init() {
 	}
 
 	key2 := commandFunc{"!last donations for [name]", "To see the last donations by that member", "", categoryStats}
-	botFuncs[key2] = func(command string, ctx context.Context) (string, error) {
+	botFuncs[key2] = func(ctx context.Context, command string) (string, error) {
 		cmd := strings.Replace(key2.command, " [name]", "", -1)
 		if strings.HasPrefix(command, cmd) {
 			name := strings.TrimSpace(command[len(cmd):])

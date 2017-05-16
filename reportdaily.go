@@ -38,7 +38,7 @@ func test(s *discordgo.Session) {
 				fmt.Println("ticker hit")
 				//lockMap.RLock()
 				ctx := context.Background()
-				msg, err := botFuncs[keyTopDonators]("!top donators today", ctx)
+				msg, err := botFuncs[keyTopDonators](ctx, "!top donators today")
 				//lockMap.RUnlock()
 				if err != nil {
 					log.Println(err)

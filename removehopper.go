@@ -9,7 +9,7 @@ func init() {
 	key := commandFunc{"!remove hopper [name]", "Remove hopper warnings", "", categoryAdmin}
 	lockMap.Lock()
 	defer lockMap.Unlock()
-	botFuncs[key] = func(command string, ctx context.Context) (string, error) {
+	botFuncs[key] = func(ctx context.Context, command string) (string, error) {
 		cmd := strings.Replace(key.command, " [name]", "", -1)
 		if strings.HasPrefix(command, cmd) {
 			s, msg, err := getSessionsAndMessageFromContext(ctx)

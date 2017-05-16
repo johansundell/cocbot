@@ -11,7 +11,7 @@ import (
 
 func init() {
 	key := commandFunc{"!list donations [0-9]+h [0-9]+m", "To list donation history, both hour and minutes must be given", "", categoryStats}
-	botFuncs[key] = func(command string, ctx context.Context) (string, error) {
+	botFuncs[key] = func(ctx context.Context, command string) (string, error) {
 		if found, _ := regexp.MatchString(key.command, command); found {
 			fmt.Println("here")
 			hours, err := getNumbersFromRegexp(command, "[0-9]+h")
