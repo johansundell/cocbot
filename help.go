@@ -22,7 +22,7 @@ func init() {
 				}
 				return keys[i].category < keys[j].category
 			})
-			msg := "**COCBOT COMMANDS**\n```"
+			msg := "**COCBOT COMMANDS**\n"
 			var c category
 			for _, v := range keys {
 				if v.category != categoryHidden {
@@ -33,7 +33,6 @@ func init() {
 					msg += fmt.Sprintf("%s - %s\n", v.command, v.helpText)
 				}
 			}
-			msg += "```"
 			s, m, err := getSessionsAndMessageFromContext(ctx)
 			if err != nil {
 				return "", err
@@ -46,9 +45,7 @@ func init() {
 					s.ChannelMessageUnpin(ch.ID, v.ID)
 				}
 			}
-			mess, _ := s.ChannelMessageSend(ch.ID, msg)
-			s.ChannelMessagePin(ch.ID, mess.ID)
-			ctx = context.WithValue(ctx, "pin", true)
+			sendEmbed(ch.ID, s, msg)
 			msg = "Sent you the help over a private channel, don't tell anyone our secret"
 			return msg, nil
 		}

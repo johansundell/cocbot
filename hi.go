@@ -29,7 +29,7 @@ func init() {
 
 			em.Color = 11584734
 
-			em.Description = "```en liten text som testar detta\noch har stöd för radbrytning```"
+			em.Description = "en liten text som testar detta\noch har stöd för radbrytning"
 
 			fields := make([]*discordgo.MessageEmbedField, 0)
 			f := discordgo.MessageEmbedField{}

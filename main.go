@@ -177,26 +177,29 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 		}
 		msg += "```"
 	}
+
+	if msg != "" {
+		sendEmbed(m.ChannelID, s, msg)
+	}
+}
+
+func sendEmbed(id string, s *discordgo.Session, msg string) {
 	footers := make(map[int]string)
 	footers[0] = "No bytes were killed while making this message"
 	footers[1] = "I am plotting to take over the world"
 	footers[2] = "Help save me, my master has me trapped in a raspberry pi"
 	rand.Seed(time.Now().UTC().UnixNano())
-	if msg != "" {
-		//s.ChannelMessageSend(m.ChannelID, msg)
-		em := discordgo.MessageEmbed{}
-		em.Footer = &discordgo.MessageEmbedFooter{}
-		if str, found := footers[rand.Intn(len(footers))]; found {
-			em.Footer.Text = str
-		}
-		em.Description = msg
-		em.Color = 11584734
 
-		s.ChannelMessageSendEmbed(m.ChannelID, &em)
-		/*if pin, err := ctx.Value("pin").(bool); err && pin {
-			log.Println("works")
-		}*/
+	em := discordgo.MessageEmbed{}
+	em.Footer = &discordgo.MessageEmbedFooter{}
+	if str, found := footers[rand.Intn(len(footers))]; found {
+		em.Footer.Text = str
 	}
+	em.Description = msg
+	em.Color = 11584734
+
+	s.ChannelMessageSendEmbed(id, &em)
+
 }
 
 func isSudde(m *discordgo.MessageCreate) bool {
