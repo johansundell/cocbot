@@ -33,6 +33,7 @@ func init() {
 				}
 				msg += fmt.Sprintf("The time for %s is %s\n", v, t.In(l).Format("15:04"))
 			}
+			msg += fmt.Sprintf("The time for Jon in Coordinated Mars Time (MTC) is %s\n", getMarsTime())
 			return msg, nil
 		}
 		return "", nil
