@@ -35,6 +35,8 @@ func toTime(h float64) string {
 	out += ":"
 	if mm < 10 {
 		out += fmt.Sprintf("0%d", mm)
+	} else {
+		out += fmt.Sprintf("%d", mm)
 	}
 	return out
 }
