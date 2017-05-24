@@ -124,7 +124,7 @@ func main() {
 				return
 			}*/
 			if channel.Name == "members_chat" {
-				channels = append(channels, channel.ID)
+				myChannel = channel.ID
 				//sendMessage(sess, "I am alive again")
 				return
 			}

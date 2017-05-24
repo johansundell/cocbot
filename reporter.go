@@ -9,7 +9,7 @@ import (
 )
 
 var queryInsertUpdateMember = `INSERT INTO members (tag, name, created, last_updated, active) VALUES (?, ?, null, null, 1) ON DUPLICATE KEY UPDATE member_id=LAST_INSERT_ID(member_id), last_updated = NOW(), active = 1`
-var channels []string
+var myChannel string
 var isCocUnderUpdate bool
 var failedTries int
 var emailTo, emailFrom string
@@ -81,13 +81,9 @@ func checkMembers(s *discordgo.Session) {
 }
 
 func sendMessage(s *discordgo.Session, message string, pin bool) {
-	if len(channels) > 0 {
-		for _, v := range channels {
-			m, _ := s.ChannelMessageSend(v, message)
-			if pin {
-				s.ChannelMessagePin(v, m.ID)
-			}
-		}
+	m, _ := s.ChannelMessageSend(myChannel, message)
+	if pin {
+		s.ChannelMessagePin(myChannel, m.ID)
 	}
 }
 

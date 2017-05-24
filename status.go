@@ -16,8 +16,8 @@ func init() {
 				return "", err
 			}
 			if isSudde(m) {
-				if len(channels) != 0 {
-					c, _ := s.Channel(channels[0])
+				if myChannel != "" {
+					c, _ := s.Channel(myChannel)
 					msg := fmt.Sprintf("Reporting on channel <#%s>", c.ID)
 					sendMessage(s, msg, false)
 
