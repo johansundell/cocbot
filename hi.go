@@ -16,6 +16,7 @@ func init() {
 			if err != nil {
 				return "", err
 			}
+			sendMessage(s, "<@&"+everyoneId+">"+"test message, sorry\nTesting for blac", false)
 			em := discordgo.MessageEmbed{}
 			em.Title = "test\nhej hopp och lite mera text"
 

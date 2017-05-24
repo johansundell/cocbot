@@ -53,10 +53,12 @@ var myClanTag, myKey string
 var cocClient cocapi.Client
 var cbotKey string
 var cbot *cleverbot.Session
+var creator string
 
 var guild string
 var coLeaderId string
 var leaderId string
+var everyoneId string
 
 func init() {
 	mysqlDb = "cocsniffer"
@@ -69,6 +71,7 @@ func init() {
 	emailTo = os.Getenv("EMAIL_TO")
 	emailFrom = os.Getenv("EMAIL_FROM")
 	cbotKey = os.Getenv("CBOT_KEY")
+	creator = os.Getenv("COC_CREATOR")
 }
 
 func main() {
@@ -114,6 +117,9 @@ func main() {
 				}
 				if v.Name == "@Leader" {
 					leaderId = v.ID
+				}
+				if v.Name == "@everyone" {
+					everyoneId = v.ID
 				}
 			}
 		}
@@ -177,7 +183,7 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 			}
 		}
 
-		if command == "!hidden" && isSudde(m) {
+		if command == "!hidden" && isCreator(m) {
 			msg = "**COCBOT COMMANDS**\n```"
 			for k, _ := range botFuncs {
 				if k.helpText == "" {
@@ -217,8 +223,8 @@ func sendEmbed(id string, s *discordgo.Session, msg string) {
 
 }
 
-func isSudde(m *discordgo.MessageCreate) bool {
-	if m.Author.Username+"#"+m.Author.Discriminator == "sudde#1958" {
+func isCreator(m *discordgo.MessageCreate) bool {
+	if m.Author.Username+"#"+m.Author.Discriminator == creator {
 		return true
 	}
 	return false

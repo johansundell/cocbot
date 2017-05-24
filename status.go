@@ -15,7 +15,7 @@ func init() {
 			if err != nil {
 				return "", err
 			}
-			if isSudde(m) {
+			if isCreator(m) {
 				if len(channels) != 0 {
 					c, _ := s.Channel(channels[0])
 					msg := fmt.Sprintf("Reporting on channel <#%s>", c.ID)

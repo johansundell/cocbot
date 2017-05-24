@@ -38,7 +38,7 @@ func checkMembers(s *discordgo.Session) {
 	}
 	if isCocUnderUpdate {
 		isCocUnderUpdate = false
-		sendMessage(s, "@everyone Clash of Clans servers are up again", true)
+		sendMessage(s, "<@&"+everyoneId+">"+" Clash of Clans servers are up again", true)
 	}
 	failedTries = 0
 
@@ -73,7 +73,7 @@ func checkMembers(s *discordgo.Session) {
 			db.QueryRow("SELECT alerted_discord FROM members WHERE tag = ?", m.Tag).Scan(&alerted)
 			if alerted == 0 {
 				//sendEmail("Member "+m.Name+" should be upgraded", "Member "+m.Name+" should be upgraded")
-				sendMessage(s, "<@&303853476776116224> Member "+m.Name+" should be upgraded", true)
+				sendMessage(s, "<@&"+coLeaderId+">"+" Member "+m.Name+" should be upgraded", false)
 				db.Exec("UPDATE members SET alerted_discord = 1 WHERE tag = ?", m.Tag)
 			}
 		}
@@ -99,7 +99,7 @@ func reportError(s *discordgo.Session, err error) {
 			if failedTries > 3 {
 				if !isCocUnderUpdate {
 					isCocUnderUpdate = true
-					sendMessage(s, "@everyone Clash of Clans servers are down", true)
+					sendMessage(s, "<@&"+everyoneId+">"+" Clash of Clans servers are down", true)
 				}
 			}
 		}
