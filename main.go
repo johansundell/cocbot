@@ -61,16 +61,23 @@ var leaderId string
 var everyoneId string
 
 func init() {
+	// MySql table name
 	mysqlDb = "cocsniffer"
+	// MySql Server
 	mysqlHost = os.Getenv("MYSQL_COC_HOST")
+	// MySql user
 	mysqlUser = os.Getenv("MYSQL_USER")
+	// MySql pass
 	mysqlPass = os.Getenv("MYSQL_PASS")
+	// Clan tag to track
 	myClanTag = os.Getenv("COC_CLANTAG")
+	// Clash of Clans API KEY
 	myKey = os.Getenv("COC_KEY")
+	// Discord bot token
 	Token = os.Getenv("DICS_TOKEN")
-	emailTo = os.Getenv("EMAIL_TO")
-	emailFrom = os.Getenv("EMAIL_FROM")
+	// Cleaverbot API key https://www.cleverbot.com/api/
 	cbotKey = os.Getenv("CBOT_KEY")
+	// Discord id of the creator ex sudde#1958
 	creator = os.Getenv("COC_CREATOR")
 }
 
@@ -146,6 +153,8 @@ func main() {
 	go reporter(dg)
 
 	go reporterDuplicate(dg)
+
+	go sniffer()
 
 	go test(dg)
 
