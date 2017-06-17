@@ -45,7 +45,8 @@ func init() {
 					s.ChannelMessageUnpin(ch.ID, v.ID)
 				}
 			}
-			sendEmbed(ch.ID, s, msg)
+			//sendEmbed(ch.ID, s, msg)
+			s.ChannelMessageSend(ch.ID, msg)
 			msg = "Sent you the help over a private channel, don't tell anyone our secret"
 			return msg, nil
 		}
