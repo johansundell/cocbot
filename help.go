@@ -25,6 +25,7 @@ func init() {
 			msg := "**COCBOT COMMANDS**\n"
 			var c category
 			for _, v := range keys {
+				//fmt.Println(v.category)
 				if v.category != categoryHidden {
 					if c != v.category {
 						msg += fmt.Sprintf("\n%s\n", v.category)
@@ -45,7 +46,8 @@ func init() {
 					s.ChannelMessageUnpin(ch.ID, v.ID)
 				}
 			}
-			sendEmbed(ch.ID, s, msg)
+			//sendEmbed(ch.ID, s, msg)
+			s.ChannelMessageSend(ch.ID, msg)
 			msg = "Sent you the help over a private channel, don't tell anyone our secret"
 			return msg, nil
 		}
