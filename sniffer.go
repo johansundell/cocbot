@@ -16,7 +16,7 @@ func sniffer() {
 			select {
 			case <-ticker.C:
 				if err := getMembersData(myClanTag); err != nil {
-					log.Panicln(err)
+					log.Println(err)
 				}
 			}
 		}
@@ -31,11 +31,11 @@ func getMembersData(clan string) error {
 		return err
 	}
 
-	if isCocUnderUpdate {
+	/*if isCocUnderUpdate {
 		isCocUnderUpdate = false
 		//sendEmail("COC Alert", "Servers are up again")
-	}
-	failedTries = 0
+	}*/
+	//failedTries = 0
 
 	var ids = make([]string, 0)
 	for _, m := range members.Items {
