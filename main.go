@@ -61,8 +61,8 @@ var leaderId string
 var everyoneId string
 
 func init() {
-	// MySql table name
-	mysqlDb = "cocsniffer"
+	// MySql scheme name
+	mysqlDb = "blac"
 	// MySql Server
 	mysqlHost = os.Getenv("MYSQL_COC_HOST")
 	// MySql user
@@ -97,6 +97,8 @@ func main() {
 		log.Fatal(err)
 	}
 	defer db.Close()
+
+	go sniffer()
 
 	// Get the account information.
 	u, err := dg.User("@me")
@@ -153,8 +155,6 @@ func main() {
 	go reporter(dg)
 
 	go reporterDuplicate(dg)
-
-	go sniffer()
 
 	go test(dg)
 
