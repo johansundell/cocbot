@@ -8,7 +8,7 @@ import (
 	"github.com/johansundell/cocapi"
 )
 
-var queryInsertUpdateMember = `INSERT INTO members (tag, name, created, last_updated, active) VALUES (?, ?, null, null, 1) ON DUPLICATE KEY UPDATE member_id=LAST_INSERT_ID(member_id), last_updated = NOW(), active = 1`
+var queryInsertUpdateMember = `INSERT INTO members (tag, clan_id, name, created, last_updated, active) VALUES (?, ?, ?, null, null, 1) ON DUPLICATE KEY UPDATE member_id=LAST_INSERT_ID(member_id), last_updated = NOW(), active = 1`
 var channels []string
 var isCocUnderUpdate bool
 var failedTries int
@@ -43,7 +43,7 @@ func checkMembers(s *discordgo.Session) {
 	failedTries = 0
 
 	for _, m := range members.Items {
-		if result, err := db.Exec(queryInsertUpdateMember, m.Tag, m.Name); err != nil {
+		if result, err := db.Exec(queryInsertUpdateMember, m.Tag, myClanTag, m.Name); err != nil {
 			log.Println(err)
 		} else {
 			if id, err := result.LastInsertId(); err != nil {

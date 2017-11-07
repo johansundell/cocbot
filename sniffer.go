@@ -9,18 +9,40 @@ import (
 
 func sniffer() {
 	ticker := time.NewTicker(10 * time.Second)
-	getMembersData(myClanTag)
+	//getMembersData(myClanTag)
+	log.Println("In sniffer")
 	defer ticker.Stop()
-	go func() {
-		for {
-			select {
-			case <-ticker.C:
-				if err := getMembersData(myClanTag); err != nil {
-					log.Println(err)
+
+	for {
+		select {
+		case <-ticker.C:
+			log.Println("Hit time")
+			if result, err := db.Query("SELECT tag FROM clans"); err != nil {
+				log.Println(err)
+			} else {
+				defer result.Close()
+				for result.Next() {
+					var tag string
+					if err := result.Scan(&tag); err != nil {
+						log.Println(err)
+					} else {
+						if err := getMembersData(tag); err != nil {
+							log.Println(err)
+						}
+					}
 				}
 			}
 		}
-	}()
+	}
+
+}
+
+func getClanIdFromTag(clan string) (int, error) {
+	var id int
+	if err := db.QueryRow("SELECT clan_id FROM clans WHERE tag = ?", clan).Scan(&id); err != nil {
+		return 0, nil
+	}
+	return id, nil
 }
 
 func getMembersData(clan string) error {
@@ -30,6 +52,11 @@ func getMembersData(clan string) error {
 		//reportError(err)
 		return err
 	}
+	id, err := getClanIdFromTag(clan)
+	if err != nil {
+		return err
+	}
+	log.Println(id, clan)
 
 	/*if isCocUnderUpdate {
 		isCocUnderUpdate = false
@@ -39,7 +66,7 @@ func getMembersData(clan string) error {
 
 	var ids = make([]string, 0)
 	for _, m := range members.Items {
-		if result, err := db.Exec(queryInsertUpdateMember, m.Tag, m.Name); err != nil {
+		if result, err := db.Exec(queryInsertUpdateMember, m.Tag, id, m.Name); err != nil {
 			log.Println(err)
 		} else {
 			if id, err := result.LastInsertId(); err != nil {

@@ -97,6 +97,7 @@ func main() {
 	defer db.Close()
 
 	go sniffer()
+	log.Println("Passed sniffer")
 
 	// Get the account information.
 	u, err := dg.User("@me")
@@ -150,11 +151,11 @@ func main() {
 		fmt.Println("error opening connection,", err)
 		return
 	}
-	go reporter(dg)
+	/*go reporter(dg)
 
 	go reporterDuplicate(dg)
 
-	go test(dg)
+	go test(dg)*/
 
 	fmt.Println("Bot is now running.  Press CTRL-C to exit.")
 	// Simple way to keep program running until CTRL-C is pressed.
@@ -171,7 +172,7 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 		return
 	}
 	msg := ""
-	c, _ := s.Channel(m.ChannelID)
+	//c, _ := s.Channel(m.ChannelID)
 	if strings.HasPrefix(m.Content, "!") {
 		command := strings.ToLower(m.Content)
 		if strings.Contains(command, "! ") {
@@ -199,7 +200,7 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 			}
 			msg += "```"
 		}
-	} else if strings.Contains(m.Content, "<@"+BotID+">") || c.IsPrivate {
+	} else if strings.Contains(m.Content, "<@"+BotID+">") {
 		str := strings.Replace(m.Content, "<@"+BotID+">", "", -1)
 		//log.Println(str)
 		s.ChannelTyping(m.ChannelID)
