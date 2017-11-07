@@ -5,11 +5,9 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
-	"math/rand"
 	"os"
 	"strings"
 	"sync"
-	"time"
 
 	"github.com/bwmarrin/discordgo"
 	_ "github.com/go-sql-driver/mysql"
@@ -62,7 +60,7 @@ var everyoneId string
 
 func init() {
 	// MySql scheme name
-	mysqlDb = "blac"
+	mysqlDb = "new_version"
 	// MySql Server
 	mysqlHost = os.Getenv("MYSQL_COC_HOST")
 	// MySql user
@@ -214,7 +212,7 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 }
 
 func sendEmbed(id string, s *discordgo.Session, msg string) {
-	footers := make(map[int]string)
+	/*footers := make(map[int]string)
 	footers[0] = "No bytes were killed while making this message"
 	footers[1] = "I am plotting to take over the world"
 	footers[2] = "Help save me, my master has me trapped in a raspberry pi"
@@ -228,7 +226,8 @@ func sendEmbed(id string, s *discordgo.Session, msg string) {
 	em.Description = msg
 	em.Color = 11584734
 
-	s.ChannelMessageSendEmbed(id, &em)
+	s.ChannelMessageSendEmbed(id, &em)*/
+	s.ChannelMessageSend(id, msg)
 
 }
 

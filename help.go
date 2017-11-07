@@ -47,8 +47,8 @@ func init() {
 				}
 			}
 			//sendEmbed(ch.ID, s, msg)
-			s.ChannelMessageSend(ch.ID, msg)
-			msg = "Sent you the help over a private channel, don't tell anyone our secret"
+			//s.ChannelMessageSend(ch.ID, msg)
+			//msg = "Sent you the help over a private channel, don't tell anyone our secret"
 			return msg, nil
 		}
 		return "", nil
