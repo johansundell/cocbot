@@ -52,7 +52,7 @@ func init() {
 				}
 				s, _, err := getSessionsAndMessageFromContext(ctx)
 				channel, found := ctx.Value("channel").(string)
-				if found {
+				if !found {
 					log.Println("No channel")
 					return "", nil
 				}
@@ -60,7 +60,7 @@ func init() {
 				if err != nil {
 					return "", err
 				}
-
+				log.Println("here")
 				s.ChannelMessageSend(channel, msg)
 			}
 			msg = ""
