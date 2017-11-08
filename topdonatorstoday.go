@@ -19,26 +19,45 @@ func init() {
 	defer lockMap.Unlock()
 	botFuncs[keyTopDonators] = func(ctx context.Context, command string) (string, error) {
 		if command == keyTopDonators.command {
-			rows, err := db.Query(sqlQueryTopTodayDonators, 10)
+			var msg string
+			clans, err := db.Query("SELECT clan_id, name FROM clans")
 			if err != nil {
 				return "", err
 			}
-			result := []topDonator{}
-			for rows.Next() {
-				r := topDonator{}
-				if err := rows.Scan(&r.amount, &r.name); err != nil {
-					log.Println(err)
+			for clans.Next() {
+				var clanId int
+				var clanName string
+				if err := clans.Scan(&clanId, &clanName); err != nil {
+					return "", err
 				}
-				result = append(result, r)
+				rows, err := db.Query(sqlQueryTopTodayDonators, clanId, 10)
+				if err != nil {
+					return "", err
+				}
+				result := []topDonator{}
+				for rows.Next() {
+					r := topDonator{}
+					if err := rows.Scan(&r.amount, &r.name); err != nil {
+						log.Println(err)
+					}
+					result = append(result, r)
+				}
+				f := func(s string) string {
+					n := strings.LastIndex(s, ".")
+					return s[:n] + "s"
+				}
+				msg = "Todays top donators are in " + clanName + ", reset at " + f(getDuration().String()) + "\n"
+				for _, v := range result {
+					msg += fmt.Sprintf("%d troops by %s\n", v.amount, v.name)
+				}
+				s, m, err := getSessionsAndMessageFromContext(ctx)
+				if err != nil {
+					return "", err
+				}
+
+				s.ChannelMessageSend(m.ChannelID, msg)
 			}
-			f := func(s string) string {
-				n := strings.LastIndex(s, ".")
-				return s[:n] + "s"
-			}
-			msg := "Todays top donators are, reset at " + f(getDuration().String()) + "\n"
-			for _, v := range result {
-				msg += fmt.Sprintf("%d troops by %s\n", v.amount, v.name)
-			}
+			msg = ""
 			return msg, nil
 		}
 		return "", nil
@@ -55,7 +74,7 @@ FROM
     members m ON m.member_id = d.member_id
 WHERE
     d.ts >= CURDATE()
-        AND d.ts < CURDATE() + INTERVAL 1 DAY AND m.active = 1
+        AND d.ts < CURDATE() + INTERVAL 1 DAY AND m.active = 1 AND clan_id = ?
 GROUP BY m.member_id
 ORDER BY diff DESC
 LIMIT 0 , ?
