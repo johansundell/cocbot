@@ -130,6 +130,8 @@ func main() {
 					everyoneId = v.ID
 				}
 			}
+		} else {
+			log.Println(err)
 		}
 
 		for _, channel := range event.Guild.Channels {
