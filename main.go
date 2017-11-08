@@ -137,11 +137,12 @@ func main() {
 				channels = append(channels, channel.ID)
 				return
 			}*/
-			if channel.Name == "members_chat" {
+			if channel.Name == "stats-channel" {
 				channels = append(channels, channel.ID)
-				//sendMessage(sess, "I am alive again")
+				//sendMessage(sess, "I am alive again", false)
 				return
 			}
+			//log.Println(channel.Name)
 		}
 	})
 
@@ -183,6 +184,7 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 
 		ctx := context.WithValue(context.Background(), "sess", s)
 		ctx = context.WithValue(ctx, "msg", m)
+		ctx = context.WithValue(ctx, "channel", m.ChannelID)
 		for _, v := range botFuncs {
 			if str, err := v(ctx, command); err != nil {
 				log.Println(err)

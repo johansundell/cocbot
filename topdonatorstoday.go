@@ -50,12 +50,18 @@ func init() {
 				for _, v := range result {
 					msg += fmt.Sprintf("%d troops by %s\n", v.amount, v.name)
 				}
-				s, m, err := getSessionsAndMessageFromContext(ctx)
+				s, _, err := getSessionsAndMessageFromContext(ctx)
+				channel, found := ctx.Value("channel").(string)
+				if found {
+					log.Println("No channel")
+					return "", nil
+				}
+
 				if err != nil {
 					return "", err
 				}
 
-				s.ChannelMessageSend(m.ChannelID, msg)
+				s.ChannelMessageSend(channel, msg)
 			}
 			msg = ""
 			return msg, nil
