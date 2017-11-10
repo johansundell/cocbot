@@ -15,7 +15,7 @@ func init() {
 	botFuncs[key] = func(ctx context.Context, command string) (string, error) {
 		if strings.Contains(command, key.command) {
 			m := make(map[string]string)
-			m["Asia/Calcutta"] = "Brown and K2"
+			m["Asia/Calcutta"] = "Brown, George and K2"
 			m["Europe/Stockholm"] = "Sudde"
 			m["Asia/Jakarta"] = "Tommy"
 			m["US/Eastern"] = "James and Blac"
