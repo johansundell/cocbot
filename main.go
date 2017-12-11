@@ -159,6 +159,7 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	}
 	msg := ""
 	c, _ := s.Channel(m.ChannelID)
+	_ = c
 	if strings.HasPrefix(m.Content, "!") {
 		command := strings.ToLower(m.Content)
 		if strings.Contains(command, "! ") {
@@ -186,7 +187,7 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 			}
 			msg += "```"
 		}
-	} else if strings.Contains(m.Content, "<@"+BotID+">") || c.IsPrivate {
+	} else if strings.Contains(m.Content, "<@"+BotID+">") /*|| c.IsPrivate*/ {
 		str := strings.Replace(m.Content, "<@"+BotID+">", "", -1)
 		//log.Println(str)
 		s.ChannelTyping(m.ChannelID)
@@ -213,7 +214,8 @@ func sendEmbed(id string, s *discordgo.Session, msg string) {
 	em.Description = msg
 	em.Color = 11584734
 
-	s.ChannelMessageSendEmbed(id, &em)
+	//s.ChannelMessageSendEmbed(id, &em)
+	s.ChannelMessageSend(id, msg)
 
 }
 
