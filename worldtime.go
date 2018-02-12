@@ -22,6 +22,7 @@ func init() {
 			m["Europe/London"] = "Stube, Blackfear, Sway and E1lioT"
 			m["US/Central"] = "wjn2448"
 			m["Canada/Pacific"] = "Heliloggerjay"
+			m["Australia/Sydney"] = "Mick"
 
 			msg := ""
 			t := time.Now()
