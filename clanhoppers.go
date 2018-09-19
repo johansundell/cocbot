@@ -33,7 +33,11 @@ func init() {
 				}
 				sort.Strings(members)
 				msg := "**These are our clan hoppers\n**"
-				return msg + strings.Join(members, "\n"), nil
+				if len(members) > 0 {
+
+					return msg + strings.Join(members, "\n"), nil
+				}
+				return "**No hoppers found\n**", nil
 			} else {
 				return securityMessage, nil
 			}
